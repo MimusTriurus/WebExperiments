@@ -34,10 +34,16 @@ def upload(request):
     return HttpResponse("")
 
 @csrf_exempt
-def receiveJson(request):
-    uploadedFile = open("data.json", "wb")
-    # the actual file is in request.body
+def sendMfccData(request):
+    uploadedFile = open("mfccData.json", "wb")
     uploadedFile.write(request.body)
     uploadedFile.close()
-    #"email": "hey@mail.com", "password": "101010"
-    return JsonResponse({'email':'django@mail.com', 'password':'django'})
+    print(request.body)
+    return JsonResponse({'email':'django1@mail.com', 'password':'django1'})
+
+@csrf_exempt
+def loadMfccData(request):
+    mfccFile = open( "mfccData.json", "r" )
+    mfccData = json.load(mfccFile)
+    return JsonResponse(mfccData)
+

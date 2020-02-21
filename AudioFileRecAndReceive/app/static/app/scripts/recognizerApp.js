@@ -1,5 +1,5 @@
 class App {
-    constructor(props) {
+    constructor( props ) {
         /******************************************************************************************************/
         this.msg = "click start";
         this.modeMsg = "";

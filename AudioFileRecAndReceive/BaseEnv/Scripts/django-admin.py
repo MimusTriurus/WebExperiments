@@ -1,4 +1,4 @@
-#!F:\Projects\Python\iNurse\AudioFileRecAndReceive\BaseEnv\Scripts\python.exe
+#!E:\Projects\Web\WebExperiments\AudioFileRecAndReceive\BaseEnv\Scripts\python.exe
 from django.core import management
 
 if __name__ == "__main__":
