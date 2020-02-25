@@ -26,4 +26,4 @@ var sendButton = document.getElementById( "btnSend" );
 sendButton.addEventListener( "click", mfccDataSend );
 
 var loadButton = document.getElementById( "btnLoad" );
-loadButton.addEventListener( "click", mfccDataLoad );
+loadButton.addEventListener("click", mfccDataLoad);

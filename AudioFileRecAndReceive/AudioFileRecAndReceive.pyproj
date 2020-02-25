@@ -33,10 +33,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app\forms.py" />
-    <Compile Include="app\models.py" />
-    <Compile Include="app\templatetags\js.py">
+    <Compile Include="app\mfcc\mfccLoader.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app\mfcc\__init__.py" />
+    <Compile Include="app\models.py" />
     <Compile Include="app\tests.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
@@ -50,9 +51,11 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="app\migrations\" />
-    <Folder Include="app\templatetags\" />
+    <Folder Include="app\mfcc\" />
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
+    <Folder Include="app\static\app\resources\" />
+    <Folder Include="app\static\app\scripts\audioSplitter\" />
     <Folder Include="app\static\app\style\" />
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
@@ -60,7 +63,9 @@
     <Folder Include="AudioFileRecAndReceive\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\resources\ihaveadream.mp3" />
     <Content Include="app\static\app\scripts\app.js" />
+    <Content Include="app\static\app\scripts\audioSplitter\audioSplitter.js" />
     <Content Include="app\static\app\scripts\dictToJson.js" />
     <Content Include="app\static\app\scripts\dynamic-time-warping.js" />
     <Content Include="app\static\app\scripts\hark.js" />
@@ -71,6 +76,7 @@
     <Content Include="app\static\app\scripts\utils.js" />
     <Content Include="app\static\app\scripts\wildemitter.js" />
     <Content Include="app\static\app\style\style.css" />
+    <Content Include="app\templates\app\audioSplitter.html" />
     <Content Include="app\templates\app\index.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />

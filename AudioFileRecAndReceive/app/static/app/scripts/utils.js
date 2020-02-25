@@ -1,23 +1,6 @@
-//import $ from 'jquery';
-
 class Utils {
 
-    static getTimestamp() {
-        var timeStampInMs = window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
-        return timeStampInMs;
-    }
-
-    /******************************************************************************
-    * blob and buffer works
-    ******************************************************************************/
-    static writeUTFBytes(view, offset, string) {
-        var lng = string.length;
-        for (var i = 0; i < lng; i++) {
-            view.setUint8(offset + i, string.charCodeAt(i));
-        }
-    }
-
-
+    // сливаем промежуточные б”феры в один
     static mergeBuffers(channelBuffer) {
         if (channelBuffer.length === 0)
             return;
@@ -33,7 +16,7 @@ class Utils {
     }
 
 
-
+    // создаем wav файл из буффера
     static bufferToBlob(internalLeftChannel, internalRecordingLength) {
 
         var interleaved = this.mergeBuffers(internalLeftChannel, internalRecordingLength);
@@ -83,15 +66,59 @@ class Utils {
         return blob;
     }
 
-    /******************************************************************************
-    * for debugging, use the following method to get voice file
-    ******************************************************************************/
+    // необходима дл€ загрузки файла на сервер
+    static getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    // загрузка wav файла на сервер
+    static upload(blob) {
+        var csrftoken = Utils.getCookie('csrftoken');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'upload/', true);
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        xhr.setRequestHeader("MyCustomHeader", "Put anything you need in here, like an ID");
+
+        xhr.upload.onloadend = function () {
+            console.log('Upload complete');
+        };
+
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                console.log((e.loaded / e.total) * 100)
+            }
+        };
+
+        xhr.send(blob);
+    }
+
+    static getTimestamp() {
+        var timeStampInMs = window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+        return timeStampInMs;
+    }
+
+    static writeUTFBytes(view, offset, string) {
+        var lng = string.length;
+        for (var i = 0; i < lng; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+        }
+    }
 
     static getVoiceFile(blob, timeInterval) {
-
         if (!blob)
             return;
-
         var a = document.createElement('a');
         a.target = '_blank';
         a.innerHTML = 'Open Recorded Audio';

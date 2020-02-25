@@ -2,7 +2,6 @@
 <html>
     <head>
         {% load static %}
-        {% load js %}
         <meta charset="UTF-8">
         <title>{{title}} {{year}}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +23,7 @@
         </div>
       
         <script src="{% static "app/scripts/recorder.js" %}"></script>
+
         <script src="{% static "app/scripts/meyda.js" %}"></script>
         <script src="{% static "app/scripts/dynamic-time-warping.js" %}"></script>
         <script src="{% static "app/scripts/jquery.js" %}"></script>
@@ -41,7 +41,9 @@
         <script src="{% static "app/scripts/dictToJson.js" %}"></script>
 
         <script type="text/javascript">
-            var someVar = {{ some_var | js }};
+            var received_data  = "{{ data|safe }}";
+            console.log("***");
+            console.log(received_data);
         </script>
     </body>
 </html>

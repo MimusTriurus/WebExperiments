@@ -31,6 +31,8 @@ __pycache__/
 
 # C extensions
 *.so
+*.wav
+*.ogg
 
 # Distribution / packaging
 .Python
