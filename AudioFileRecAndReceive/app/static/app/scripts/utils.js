@@ -1,15 +1,14 @@
 class Utils {
-
     // сливаем промежуточные б”феры в один
-    static mergeBuffers(channelBuffer) {
-        if (channelBuffer.length === 0)
+    static mergeBuffers( channelBuffer ) {
+        if ( channelBuffer.length === 0 )
             return;
-        var result = new Float32Array(channelBuffer.length * channelBuffer[0].length);
+        var result = new Float32Array( channelBuffer.length * channelBuffer[ 0 ].length );
         var offset = 0;
         var lng = channelBuffer.length;
-        for (var i = 0; i < lng; i++) {
-            var buffer = channelBuffer[i];
-            result.set(buffer, offset);
+        for ( var i = 0; i < lng; i++ ) {
+            var buffer = channelBuffer[ i ];
+            result.set( buffer, offset );
             offset += buffer.length;
         }
         return result;
@@ -17,12 +16,10 @@ class Utils {
 
 
     // создаем wav файл из буффера
-    static bufferToBlob(internalLeftChannel, internalRecordingLength) {
-
-        var interleaved = this.mergeBuffers(internalLeftChannel, internalRecordingLength);
-        if (!interleaved)
+    static bufferToBlob( internalLeftChannel, internalRecordingLength ) {
+        var interleaved = this.mergeBuffers( internalLeftChannel, internalRecordingLength );
+        if ( !interleaved )
             return;
-
         var numChannels = 1, sampleRate = 48000;
         // we create our wav file
         var buffer = new ArrayBuffer(44 + interleaved.length * 2);
@@ -83,25 +80,25 @@ class Utils {
     return cookieValue;
 }
     // загрузка wav файла на сервер
-    static upload(blob) {
-        var csrftoken = Utils.getCookie('csrftoken');
+    static upload( blob ) {
+        var csrftoken = Utils.getCookie( 'csrftoken' );
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'upload/', true);
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        xhr.setRequestHeader("MyCustomHeader", "Put anything you need in here, like an ID");
+        var xhr = new XMLHttpRequest( );
+        xhr.open( 'POST', 'upload/', true );
+        xhr.setRequestHeader( "X-CSRFToken", csrftoken );
+        xhr.setRequestHeader( "MyCustomHeader", "Put anything you need in here, like an ID" );
 
-        xhr.upload.onloadend = function () {
-            console.log('Upload complete');
+        xhr.upload.onloadend = function ( ) {
+            //console.log('Upload complete');
         };
-
+        /*
         xhr.upload.onprogress = function (e) {
             if (e.lengthComputable) {
                 console.log((e.loaded / e.total) * 100)
             }
         };
-
-        xhr.send(blob);
+        */
+        xhr.send( blob );
     }
 
     static getTimestamp() {

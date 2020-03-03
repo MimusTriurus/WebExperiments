@@ -1,7 +1,5 @@
-class AudioSplitter {
-    constructor(props) {
-        this.playbackElement = null;
-
+class AudioProcessing {
+    constructor( ) {
         this.audioContextType = null;
         this.localstream = null;
         this.context = null;
@@ -9,16 +7,25 @@ class AudioSplitter {
         this.node = null;
         this.recording = true;
         this.speechHark = null;
-        this.leftchannel = [ ];
+        this.leftchannel = [];
 
         this._stopRecTimeout = 1000;
-        this._threshold = -40;
+        this._threshold = -50;
         this._harkInterval = 100;
         this.recordingLength = 0;
         this.numChannels = 1;
 
+        this.internalLeftChannel = null;
+        this.internalRecordingLength = null;
+
+        // текущий аудио файл
+        this.blob = null;
+
         this.BUFFER_SIZE = 2048;
+        // определяем максимальный размер аудио файла
         this.BUFF_ARR_SIZE = 40 * 100;
+        // тэг аудио проигрывателя на странице html
+        this.AUDIO_FILE_TAG = "playback";
     }
 
     onMediaSuccess = ( stream ) => {
@@ -37,7 +44,6 @@ class AudioSplitter {
 
         this.node.onaudioprocess = ( e ) => {
             var left = e.inputBuffer.getChannelData( 0 );
-
             if ( !this.recording )
                 return;
             if ( this.leftchannel.length < this.BUFF_ARR_SIZE ) {
@@ -60,32 +66,32 @@ class AudioSplitter {
         this.speechHark.on( 'stopped_speaking', ( ) => {
             console.log( "stopped_speaking" );
             this.stopRec( );
+            this.processing( );
         } );
     }
-
-    stopRec = ( ) => {
-        console.log( "stop recording" );
+    // речь окончилась - записываем аудио файл
+    stopRec( ) {
         this.recording = false;
-        var internalLeftChannel = this.leftchannel.slice( 0 );
-        var internalRecordingLength = this.recordingLength;
 
-        var blob = Utils.bufferToBlob( internalLeftChannel, internalRecordingLength );
+        this.internalLeftChannel = this.leftchannel.slice( 0 );
+        this.internalRecordingLength = this.recordingLength;
 
-        if ( !blob )
-            return;
-
-        Utils.upload( blob );
+        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.internalRecordingLength );
 
         this.leftchannel.length = 0;
         this.recordingLength = 0;
         this.recording = true;
     };
+    // виртуальные метод обработки текущего аудио-файла
+    processing( ) {
+        //console.log( "audioProcessing processing" );
+        //console.log( this.localStream.active );
+    }
 
     async startListening( ) {
-        this.playbackElement = document.getElementById("playback");
-        var captureStream = this.playbackElement.captureStream();
-        this.playbackElement.play( );
+        var captureStream = await this.getAudioStream( );
         this.onMediaSuccess( captureStream );
+        this.audioIsEnded = false;
     };
 
     stopListening = ( ) => {
@@ -96,25 +102,20 @@ class AudioSplitter {
         }
         this.localStream = null;
         this.recordingLength = 0;
-        if (this.speechHark) this.speechHark.stop();
-        this.playbackElement.pause( );
+        if ( this.speechHark ) this.speechHark.stop( );
+
+        this.audioIsEnded = true;
     };
-}
 
-var audioSplitter = null;
-
-window.onload = function () {
-    audioSplitter = new AudioSplitter();
-
-    var btnStart = document.getElementById("startButton");
-    btnStart.addEventListener("click", function () {
-        audioSplitter.startListening();
-    });
-
-    var btnStop = document.getElementById("stopButton");
-    btnStop.addEventListener("click", function () {
-        audioSplitter.stopListening();
-    });
-
-    this.console.log("loaded");
+    // захват аудио с микрофона
+    getMicrophoneStream = ( ) => {
+        var stream = navigator.mediaDevices.getUserMedia( { audio: true } );
+        return stream;
+    }
+    // захват аудио с проигрывателя
+    getAudioStream = ( ) => {
+        var playbackElement = document.getElementById(this.AUDIO_FILE_TAG);
+        var stream = playbackElement.captureStream( );
+        return stream;
+    }
 }

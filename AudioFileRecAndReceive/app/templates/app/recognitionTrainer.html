@@ -37,15 +37,17 @@
         <button id="stopButton">Stop</button>
 
         <audio controls id="playback">
-            <source src="{% static "app/resources/audio/train/person1/1.wav" %}" />
+            <source src="{% static "app/resources/audio/train/person2/3.wav" %}" />
         </audio>
 
         <script src="{% static "app/scripts/utils.js" %}"></script>
         <script src="{% static "app/scripts/wildemitter.js" %}"></script>
         <script src="{% static "app/scripts/hark.js" %}"></script>
+        <script src="{% static "app/scripts/meyda.js" %}"></script>
 
         <script src="{% static "app/scripts/audioProcessing/audioProcessing.js" %}"></script>
-        <script src="{% static "app/scripts/audioProcessing/audioSplitter.js" %}"></script>
+        <script src="{% static "app/scripts/recognition/recognize.js" %}"></script>
+        <script src="{% static "app/scripts/recognition/recognitionTrainer.js" %}"></script>
     </div>
 </body>
 

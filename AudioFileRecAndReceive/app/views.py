@@ -24,10 +24,16 @@ def home(request):
         }
     )
 
-def audioSplitter(request) : 
+def audioSplitter( request ) : 
     data = loadMfccJson( )
-    context = {'data':data}
-    return render(request, 'app/audioSplitter.html')
+    context = { 'data':data }
+    return render( request, 'app/audioSplitter.html' )
+
+def recognitionTrainer( request ) : 
+    return render( request, 'app/recognitionTrainer.html' )
+
+def recognitionWorker( request ) : 
+    return render( request, 'app/recognitionWorker.html' )
 
 i = 0
 
@@ -55,5 +61,7 @@ def sendMfccData(request):
 def loadMfccData(request):
     mfccFile = open( "mfccData.json", "r" )
     mfccData = json.load(mfccFile)
-    return JsonResponse(mfccData)
+    #print(mfccData)
+    return JsonResponse(mfccData, safe=False)
+    #return JsonResponse({'email':'django1@mail.com', 'password':'django1'})
 

@@ -10,7 +10,7 @@ from app import forms, views
 
 
 urlpatterns = [
-    path('', views.audioSplitter, name='home'),
+    path('', views.recognitionWorker, name='home'),
     path('upload/', views.upload, name='upload'),
 
     path('sendMfccData/', views.sendMfccData, name='sendMfccData'),
