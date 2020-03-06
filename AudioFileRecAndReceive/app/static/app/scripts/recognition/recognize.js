@@ -27,27 +27,14 @@ class Recognize {
      * @param {*} setStateFunc 
      */
     static train( _buffer, transcript, setStateFunc ) {
-        setStateFunc("training");
+        setStateFunc( "training" + _buffer );
         this.buffer = _buffer;
         Meyda.bufferSize = this.bufferSize;
-
-        // calculate mfcc data
         this.bufferMfcc = this.createMfccMetric( );
-
-        // save current mfcc for future recognitions
         this.mfccHistoryArr.push( {
             mfcc: this.bufferMfcc,
             transcript: transcript
         } );
-
-        if ( !this.mfccHistoryCunters[ transcript ] && this.mfccHistoryCunters[ transcript ] !== 0 )
-            this.mfccHistoryCunters[ transcript ] = 0;
-        this.mfccHistoryCunters[ transcript ]++;
-
-        //console.log( this.bufferMfcc );
-        //console.log( this.mfccHistoryArr );
-
-        setStateFunc( "training saved" );
         return true;
     }
 
@@ -60,54 +47,34 @@ class Recognize {
         this.buffer = _buffer;
         Meyda.bufferSize = this.bufferSize;
 
-        // calculate mfcc data
         this.bufferMfcc = this.createMfccMetric( );
-
-        console.log( this.bufferMfcc );
 
         this.startTime = Utils.getTimestamp( );
         setStateFunc( "recognizing" );
 
-        // calculate DTW distance from all available trained data
-        this.calculateDistanceArr();
-        // get closest one using knn
+        this.calculateDistanceArr( );
+
         var knnClosest;
-        if (this.K_factor <= this.mfccHistoryArr.length) {
-            knnClosest = this.getMostSimilarKnn(this.mfccDistArr, this.compareMfcc, this.K_factor);
-
-            console.log("knnClosest is NULL:" + (knnClosest));
-
-            if ( knnClosest && ( this.mfccHistoryCunters[ knnClosest.transcript ] < this._minNumberOfVariants
-                || knnClosest.confidence < this._minKnnConfidence)) {
-                console.log( "knnClosest is NULL!!!" );
+        if ( this.K_factor <= this.mfccHistoryArr.length ) {
+            knnClosest = this.getMostSimilarKnn( this.mfccDistArr, this.compareMfcc, this.K_factor );
+            if ( knnClosest && ( knnClosest.confidence < this._minKnnConfidence ) ) {
                 knnClosest = null;
             }
-
-            if ( knnClosest && knnClosest.transcript !== "" ) {
-                // save current mfcc for next recognitions
-                this.mfccHistoryArr.push( {
-                    mfcc: this.bufferMfcc,
-                    transcript: knnClosest.transcript
-                } );
-                if ( !this.mfccHistoryCunters[ knnClosest.transcript ] && this.mfccHistoryCunters[ knnClosest.transcript ] !== 0 )
-                    this.mfccHistoryCunters[ knnClosest.transcript ] = 0;
-                this.mfccHistoryCunters[ knnClosest.transcript ]++;
-            }
         }
-
-        // validate that we have minimal recognition confidence
-        //console.log(knnClosest.confidence);
-
         if ( !knnClosest || knnClosest.confidence < 0.75 ) {
             this.endTime = Utils.getTimestamp( );
             setStateFunc( "not recognized" );
-            console.log( "recognition locally failed or returned no good result (" + ( this.endTime - this.startTime ) + " ms)" );
+            console.log( "recognition locally failed or returned no good result" );
             return null;
         }
-        else {
+        else { // если слово распознано, то дополняем обучающую выборку
+            this.mfccHistoryArr.push({
+                mfcc: this.bufferMfcc,
+                transcript: knnClosest.transcript
+            });
             knnClosest.processTime = Utils.getTimestamp( ) - this.startTime;
         }
-        setStateFunc( "recognized" );
+        setStateFunc( "recognized:" + knnClosest.transcript );
         return knnClosest;
     };
 

@@ -1,4 +1,16 @@
 class Utils {
+    // захват аудио с микрофона
+    static getMicrophoneStream( ) {
+        var stream = navigator.mediaDevices.getUserMedia( { audio: true } );
+        return stream;
+    }
+    // захват аудио с проигрывател€
+    static getAudioStream( ) {
+        var playbackElement = document.getElementById( "playback" );
+        var stream = playbackElement.captureStream( );
+        return stream;
+    }
+
     // сливаем промежуточные б”феры в один
     static mergeBuffers( channelBuffer ) {
         if ( channelBuffer.length === 0 )
@@ -13,7 +25,6 @@ class Utils {
         }
         return result;
     }
-
 
     // создаем wav файл из буффера
     static bufferToBlob( internalLeftChannel, internalRecordingLength ) {
@@ -84,7 +95,7 @@ class Utils {
         var csrftoken = Utils.getCookie( 'csrftoken' );
 
         var xhr = new XMLHttpRequest( );
-        xhr.open( 'POST', 'upload/', true );
+        xhr.open( 'POST', '../upload/', true );
         xhr.setRequestHeader( "X-CSRFToken", csrftoken );
         xhr.setRequestHeader( "MyCustomHeader", "Put anything you need in here, like an ID" );
 

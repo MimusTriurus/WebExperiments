@@ -12,21 +12,9 @@ import json
 from app.mfcc.mfccLoader import loadMfccJson
 
 def home(request):
-    data = loadMfccJson( )
-    context = {'data':data}
-    return render(
-        request,
-        'app/index.html',
-        {
-            'title':'Home Page',
-            'year':datetime.now().year,
-            'data':context
-        }
-    )
+    return render( request, 'app/MainMenu.html' )
 
 def audioSplitter( request ) : 
-    data = loadMfccJson( )
-    context = { 'data':data }
     return render( request, 'app/audioSplitter.html' )
 
 def recognitionTrainer( request ) : 
@@ -34,6 +22,9 @@ def recognitionTrainer( request ) :
 
 def recognitionWorker( request ) : 
     return render( request, 'app/recognitionWorker.html' )
+
+def trainAndWorkWithMic( request ) :
+    return render( request, 'app/index.html' )
 
 i = 0
 
@@ -61,7 +52,5 @@ def sendMfccData(request):
 def loadMfccData(request):
     mfccFile = open( "mfccData.json", "r" )
     mfccData = json.load(mfccFile)
-    #print(mfccData)
     return JsonResponse(mfccData, safe=False)
-    #return JsonResponse({'email':'django1@mail.com', 'password':'django1'})
 

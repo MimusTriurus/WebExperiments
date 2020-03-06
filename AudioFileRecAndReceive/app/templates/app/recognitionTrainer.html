@@ -36,8 +36,16 @@
         <button id="startButton">Start</button>
         <button id="stopButton">Stop</button>
 
+        <ul id="list">
+            <li><a id ="f1" href="#" data-value="{% static "app/resources/audio/train/person1/hello/01.wav" %}">01.wav</a></li>
+            <li><a id ="f2" href="#" data-value="{% static "app/resources/audio/train/person1/hello/02.wav" %}">02.wav</a></li>
+            <li><a id ="f3" href="#" data-value="{% static "app/resources/audio/train/person1/hello/03.wav" %}">03.wav</a></li>
+            <li><a id ="f4" href="#" data-value="{% static "app/resources/audio/train/person1/hello/04.wav" %}">04.wav</a></li>
+            <li><a id ="f5" href="#" data-value="{% static "app/resources/audio/train/person1/hello/05.wav" %}">05.wav</a></li>
+        </ul>
+
         <audio controls id="playback">
-            <source src="{% static "app/resources/audio/train/person2/3.wav" %}" />
+            <source id="audioSrc" src="{% static "app/resources/audio/train/person1/hello/5hello.wav" %}" />
         </audio>
 
         <script src="{% static "app/scripts/utils.js" %}"></script>

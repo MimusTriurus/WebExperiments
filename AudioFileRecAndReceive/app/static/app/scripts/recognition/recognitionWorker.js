@@ -45,13 +45,13 @@ window.onload = function ( ) {
     recognitionWorker.mfccDataLoad( );
 
     var btnStart = document.getElementById("startButton");
-    btnStart.addEventListener("click", function ( ) {
-        recognitionWorker.startListening( );
+    btnStart.addEventListener( "click", function ( ) {
+        recognitionWorker.startListening( Utils.getAudioStream( ) );
     } );
 
-    var btnStop = document.getElementById("stopButton");
-    btnStop.addEventListener("click", function () {
-        recognitionWorker.stopListening();
+    var btnStop = document.getElementById( "stopButton" );
+    btnStop.addEventListener( "click", function ( ) {
+        recognitionWorker.stopListening( );
     });
 
     this.console.log("recognition worker loaded");

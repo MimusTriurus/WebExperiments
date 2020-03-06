@@ -8,10 +8,12 @@ class AudioProcessing {
         this.recording = true;
         this.speechHark = null;
         this.leftchannel = [];
-
-        this._stopRecTimeout = 1000;
-        this._threshold = -50;
+        // предзапись с момента начала речи
         this._harkInterval = 100;
+        // постзапись с момента окончания речи
+        this._stopRecTimeout = 1000;
+
+        this._threshold = -50;
         this.recordingLength = 0;
         this.numChannels = 1;
 
@@ -23,7 +25,7 @@ class AudioProcessing {
 
         this.BUFFER_SIZE = 2048;
         // определяем максимальный размер аудио файла
-        this.BUFF_ARR_SIZE = 40 * 100;
+        this.BUFF_ARR_SIZE = 40/* * 100*/;
         // тэг аудио проигрывателя на странице html
         this.AUDIO_FILE_TAG = "playback";
     }
@@ -43,7 +45,7 @@ class AudioProcessing {
         }
 
         this.node.onaudioprocess = ( e ) => {
-            var left = e.inputBuffer.getChannelData( 0 );
+            var left = e.inputBuffer.getChannelData(0);
             if ( !this.recording )
                 return;
             if ( this.leftchannel.length < this.BUFF_ARR_SIZE ) {
@@ -64,21 +66,20 @@ class AudioProcessing {
             console.log( "speaking" );
         } );
         this.speechHark.on( 'stopped_speaking', ( ) => {
-            console.log( "stopped_speaking" );
-            this.stopRec( );
-            this.processing( );
+            console.log("stopped_speaking");
+            this.stopRec();
+            this.processing();
         } );
     }
     // речь окончилась - записываем аудио файл
     stopRec( ) {
         this.recording = false;
-
+        console.log(this.leftchannel.slice(0));
         this.internalLeftChannel = this.leftchannel.slice( 0 );
         this.internalRecordingLength = this.recordingLength;
-
-        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.internalRecordingLength );
-
+        this.blob = Utils.bufferToBlob(this.internalLeftChannel, this.internalRecordingLength);
         this.leftchannel.length = 0;
+        //this.leftchannel = [];
         this.recordingLength = 0;
         this.recording = true;
     };
@@ -87,12 +88,15 @@ class AudioProcessing {
         //console.log( "audioProcessing processing" );
         //console.log( this.localStream.active );
     }
-
+    /*
     async startListening( ) {
         var captureStream = await this.getAudioStream( );
         this.onMediaSuccess( captureStream );
-        this.audioIsEnded = false;
     };
+    */
+    async startListening( stream ) {
+        this.onMediaSuccess( stream );
+    }
 
     stopListening = ( ) => {
         this.recording = false;
@@ -103,8 +107,6 @@ class AudioProcessing {
         this.localStream = null;
         this.recordingLength = 0;
         if ( this.speechHark ) this.speechHark.stop( );
-
-        this.audioIsEnded = true;
     };
 
     // захват аудио с микрофона

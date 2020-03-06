@@ -17,8 +17,8 @@ window.onload = function ( ) {
     audioSplitter = new AudioSplitter( );
 
     var btnStart = document.getElementById( "startButton" );
-    btnStart.addEventListener( "click", function ( ) {
-        audioSplitter.startListening( );
+    btnStart.addEventListener("click", function () {
+        audioSplitter.startListening( Utils.getAudioStream( ) );
     } );
 
     var btnStop = document.getElementById( "stopButton" );

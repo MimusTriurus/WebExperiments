@@ -10,9 +10,16 @@ from app import forms, views
 
 
 urlpatterns = [
-    path('', views.recognitionWorker, name='home'),
+    path('', views.home, name='home'),
     path('upload/', views.upload, name='upload'),
 
-    path('sendMfccData/', views.sendMfccData, name='sendMfccData'),
-    path('loadMfccData/', views.loadMfccData, name='loadMfccData'),
+    path('recognitionTrainer/', views.recognitionTrainer, name='recognitionTrainer'),
+    path('recognitionWorker/', views.recognitionWorker, name='recognitionWorker'),
+
+    path('trainAndWorkWithMic/', views.trainAndWorkWithMic, name='trainAndWorkWithMic'),
+
+    path('audioSplitter/', views.audioSplitter, name='audioSplitter'),
+
+    path('recognitionTrainer/sendMfccData/', views.sendMfccData, name='sendMfccData'),
+    path('recognitionWorker/loadMfccData/', views.loadMfccData, name='loadMfccData'),
 ]
