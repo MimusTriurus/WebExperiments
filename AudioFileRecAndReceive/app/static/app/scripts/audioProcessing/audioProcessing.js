@@ -7,7 +7,7 @@ class AudioProcessing {
         this.node = null;
         this.recording = true;
         this.speechHark = null;
-        this.leftchannel = [];
+        this.leftchannel = [ ];
         // предзапись с момента начала речи
         this._harkInterval = 100;
         // постзапись с момента окончания речи
@@ -61,39 +61,42 @@ class AudioProcessing {
         source.connect( this.node );
         this.node.connect( this.context.destination );
 
-        this.speechHark = initHarker( this.localStream, { interval: this._harkInterval, threshold: this._threshold, play: false, recoredInterval: this._stopRecTimeout } );
-        this.speechHark.on( 'speaking', ( ) => {
-            console.log( "speaking" );
-        } );
-        this.speechHark.on( 'stopped_speaking', ( ) => {
-            console.log("stopped_speaking");
-            this.stopRec();
-            this.processing();
-        } );
+        this.speechHark = initHarker(this.localStream, { interval: this._harkInterval, threshold: this._threshold, play: false, recoredInterval: this._stopRecTimeout });
+
+        this.speechHark.on( 'speaking', this.onSpeechStart );
+        this.speechHark.on( 'stopped_speaking', this.onSpeechEnd );
     }
+    // система зафиксировала речь
+    onSpeechStart = ( ) => {
+        console.log( 'start speaking' );
+    }
+    // речь закончилась
+    onSpeechEnd = ( ) => {
+        console.log( 'end speaking' );
+        this.stopRec( );
+        this.processing( );
+    }
+
     // речь окончилась - записываем аудио файл
-    stopRec( ) {
+    async stopRec( ) {
         this.recording = false;
-        console.log(this.leftchannel.slice(0));
+        //console.log(this.leftchannel.slice(0));
         this.internalLeftChannel = this.leftchannel.slice( 0 );
         this.internalRecordingLength = this.recordingLength;
-        this.blob = Utils.bufferToBlob(this.internalLeftChannel, this.internalRecordingLength);
+
+        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.internalRecordingLength );
+
         this.leftchannel.length = 0;
-        //this.leftchannel = [];
         this.recordingLength = 0;
         this.recording = true;
-    };
+    }
+
     // виртуальные метод обработки текущего аудио-файла
     processing( ) {
         //console.log( "audioProcessing processing" );
         //console.log( this.localStream.active );
     }
-    /*
-    async startListening( ) {
-        var captureStream = await this.getAudioStream( );
-        this.onMediaSuccess( captureStream );
-    };
-    */
+
     async startListening( stream ) {
         this.onMediaSuccess( stream );
     }
@@ -107,7 +110,7 @@ class AudioProcessing {
         this.localStream = null;
         this.recordingLength = 0;
         if ( this.speechHark ) this.speechHark.stop( );
-    };
+    }
 
     // захват аудио с микрофона
     getMicrophoneStream = ( ) => {
@@ -116,7 +119,7 @@ class AudioProcessing {
     }
     // захват аудио с проигрывателя
     getAudioStream = ( ) => {
-        var playbackElement = document.getElementById(this.AUDIO_FILE_TAG);
+        var playbackElement = document.getElementById( this.AUDIO_FILE_TAG );
         var stream = playbackElement.captureStream( );
         return stream;
     }

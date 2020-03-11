@@ -1,8 +1,8 @@
 URL = window.URL || window.webkitURL;
 
-var gumStream; 						//stream from getUserMedia()
-var rec; 							//Recorder.js object
-var input; 							//MediaStreamAudioSourceNode we'll be recording
+var gumStream;
+var rec;
+var input;
 var hark;
 
 const levelRangeElement = document.getElementById("levelRange");

@@ -2,6 +2,8 @@ class RecognitionTrainer extends AudioProcessing {
     constructor( ) {
         super( );
         this.trained = false;
+        // кол-во эпох обучения
+        this.EPOCH = 4;
         this.currentTrainingIndex = 0;
         Recognize.bufferSize = this.BUFFER_SIZE;
     }
@@ -31,9 +33,9 @@ class RecognitionTrainer extends AudioProcessing {
             "person1",
             this.setStateMsgFunc);
         if ( success ) {
-            //currentTrainingIndex++;
-            //if (this.currentTrainingIndex == 4)
-                //mfccDataSend();
+            this.currentTrainingIndex++;
+            if ( this.currentTrainingIndex == this.EPOCH )
+                this.mfccDataSend( );
         }
     }
 
@@ -55,28 +57,11 @@ class RecognitionTrainer extends AudioProcessing {
 var recognitionTrainer = null;
 
 window.onload = function ( ) {
-    recognitionTrainer = new RecognitionTrainer();
-
-
-    var playbackElement = document.getElementById("playback");
-    var stream = playbackElement.captureStream();
-    var audioSrc = this.document.getElementById( "audioSrc" );
-
-    var step = 0;
-    var epoch = 1;
-    
-    playbackElement.addEventListener('canplay', () => {
-        //recognitionTrainer.stopListening( );
-        recognitionTrainer.startListening( stream );
-    } );
-    
-    playbackElement.addEventListener("ended", () => {
-        recognitionTrainer.mfccDataSend();
-    });
+    recognitionTrainer = new RecognitionTrainer( );
 
     var btnStart = document.getElementById( "startButton" );
     btnStart.addEventListener("click", function ( ) {
-        //recognitionTrainer.startListening( stream );
+        recognitionTrainer.startListening( Utils.getAudioStream( ) );
     } );
 
     var btnStop = document.getElementById( "stopButton" );

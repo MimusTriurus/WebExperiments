@@ -1,4 +1,5 @@
-function mfccDataSend( ) {
+// отправка mfcc-шаблонов на сервер
+function mfccDataSend() {
     var xhr = new XMLHttpRequest();
     var url = "sendMfccData/";
     xhr.open("POST", url, true);
@@ -7,7 +8,7 @@ function mfccDataSend( ) {
     var data = JSON.stringify({ "email": "hey@mail.com", "password": "101010" });
     xhr.send(data);
 }
-
+// загрузка mfcc-шаблонов с сервера
 function mfccDataLoad( ) {
     var xhr = new XMLHttpRequest( );
     var url = "loadMfccData/";

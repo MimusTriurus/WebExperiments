@@ -1,17 +1,17 @@
 class Recognize {
-    // you can try and tune these variables
     static startTime = null;
     static endTime = null;
-    static calibMode = false;
+    // сохраненые в ходе обучения шаблоны MFCC
     static mfccHistoryArr = [ ];
-    static mfccHistoryCunters = [ ];
-    // static dictionary = ['left', 'right', 'up', 'down']; 
+
     static bufferSize = 2048;
     static _buffArrSize = 40;      // 40   / 70
     static _minNumberOfVariants = 2;
     static _minKnnConfidence = 0;
     static _minDTWDist = 1000;
     static K_factor = 3;
+    // порог "схожести"
+    static CONFIDENCE_THRESHOLD = 0.75;
 
     static mfccDistArr = [ ];
 
@@ -20,14 +20,8 @@ class Recognize {
 
     static dictionary = [ 'person1' ];
 
-    /**
-     * train the system, assume that the passed audio data in the buffer fits the transcript
-     * @param {*} _buffer 
-     * @param {*} transcript 
-     * @param {*} setStateFunc 
-     */
     static train( _buffer, transcript, setStateFunc ) {
-        setStateFunc( "training" + _buffer );
+        //setStateFunc( "training" + _buffer );
         this.buffer = _buffer;
         Meyda.bufferSize = this.bufferSize;
         this.bufferMfcc = this.createMfccMetric( );
@@ -38,11 +32,6 @@ class Recognize {
         return true;
     }
 
-    /**
-     * try to recognize what the audio data in the buffer is
-     * @param {*} _buffer 
-     * @param {*} setStateFunc 
-     */
     static recognize( _buffer, setStateFunc ) {
         this.buffer = _buffer;
         Meyda.bufferSize = this.bufferSize;
@@ -51,7 +40,6 @@ class Recognize {
 
         this.startTime = Utils.getTimestamp( );
         setStateFunc( "recognizing" );
-
         this.calculateDistanceArr( );
 
         var knnClosest;
@@ -61,7 +49,7 @@ class Recognize {
                 knnClosest = null;
             }
         }
-        if ( !knnClosest || knnClosest.confidence < 0.75 ) {
+        if ( !knnClosest || knnClosest.confidence < CONFIDENCE_THRESHOLD ) {
             this.endTime = Utils.getTimestamp( );
             setStateFunc( "not recognized" );
             console.log( "recognition locally failed or returned no good result" );

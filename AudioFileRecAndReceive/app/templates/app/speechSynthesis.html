@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <audio id='myaudio'  preload= 'auto' controls  type="audio/wav"></audio>
+
+    <p><b>Введите текст для воспроизведения:</b><br>
+       <input id ="text" type="text" size="40">
+    </p>
+
+    <button id ="play">Воспроизвести</button>
+
+    <script>
+        var textField = document.getElementById('text');
+        textField.value = 'выписываю рецепт на аспирин';
+
+        var btn = document.getElementById( 'play' );
+        var audio = document.getElementById( 'myaudio' );
+
+        btn.addEventListener( 'click', ( ) => {
+            var xhr = new XMLHttpRequest( );
+            var params = 'text2Speech=' + encodeURIComponent( textField.value );
+            xhr.open( 'GET', '/text2Speech?' + params, true );
+            xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
+            xhr.responseType = 'blob';
+            xhr.onload = function( evt ) {
+                    var blob = new Blob( [ xhr.response ], { type: 'audio/wav' } );
+                    var objectUrl = URL.createObjectURL( blob );
+                    audio.src = objectUrl;
+                    audio.onload = function( evt ) {
+                    URL.revokeObjectURL( objectUrl );
+                };
+                audio.play( );
+            };
+            xhr.send( );
+        } );
+    </script>
+</body>
+</html>

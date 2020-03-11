@@ -18,8 +18,6 @@ class RecognitionWorker extends AudioProcessing {
         xhr.send( );
     }
 
-
-
     processing( ) {
         super.processing( );
 

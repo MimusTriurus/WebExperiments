@@ -1,1 +1,4 @@
-django >= 2.1.6, < 3.0 
+django >= 2.1.6, < 3.0
+rhvoice-wrapper >= 0.5.1
+rhvoice-wrapper-bin >= 0.2.0
+rhvoice-wrapper-data >= 0.2.0

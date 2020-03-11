@@ -11,7 +11,6 @@ from app import forms, views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('upload/', views.upload, name='upload'),
 
     path('recognitionTrainer/', views.recognitionTrainer, name='recognitionTrainer'),
     path('recognitionWorker/', views.recognitionWorker, name='recognitionWorker'),
@@ -20,6 +19,10 @@ urlpatterns = [
 
     path('audioSplitter/', views.audioSplitter, name='audioSplitter'),
 
+    path('speechSynthesis/', views.speechSynthesis, name='speechSynthesis'),
+
+    path('upload/', views.upload, name='upload'),
+    path('text2Speech/', views.text2Speech, name='text2Speech'),
     path('recognitionTrainer/sendMfccData/', views.sendMfccData, name='sendMfccData'),
     path('recognitionWorker/loadMfccData/', views.loadMfccData, name='loadMfccData'),
 ]
