@@ -6,7 +6,17 @@
     <title></title>
 </head>
 <body>
-    <audio id='myaudio'  preload= 'auto' controls  type="audio/wav"></audio>
+    <audio id='myaudio'  preload= 'auto' type="audio/wav"></audio>
+
+    <p><b>Выберите:</b><br>
+    <p>
+    <select id="voice">
+        <option>aleksandr</option>
+        <option>anna</option>
+        <option>elena</option>
+        <option>irina</option>
+    </select>
+    </p>
 
     <p><b>Введите текст для воспроизведения:</b><br>
        <input id ="text" type="text" size="40">
@@ -15,7 +25,9 @@
     <button id ="play">Воспроизвести</button>
 
     <script>
-        var textField = document.getElementById('text');
+        var cbbx = document.getElementById( 'voice' );
+
+        var textField = document.getElementById( 'text' );
         textField.value = 'выписываю рецепт на аспирин';
 
         var btn = document.getElementById( 'play' );
@@ -23,7 +35,9 @@
 
         btn.addEventListener( 'click', ( ) => {
             var xhr = new XMLHttpRequest( );
-            var params = 'text2Speech=' + encodeURIComponent( textField.value );
+            var params = 'text2Speech=' + encodeURIComponent(textField.value) + '&'
+                + 'voice=' + cbbx.value;
+            console.log( 'current voice is:' + cbbx.value );
             xhr.open( 'GET', '/text2Speech?' + params, true );
             xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
             xhr.responseType = 'blob';

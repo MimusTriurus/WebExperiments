@@ -7,35 +7,38 @@ class AudioProcessing {
         this.node = null;
         this.recording = true;
         this.speechHark = null;
-        this.leftchannel = [ ];
+        this.leftchannel = [];
         // предзапись с момента начала речи
         this._harkInterval = 100;
         // постзапись с момента окончания речи
         this._stopRecTimeout = 1000;
 
         this._threshold = -50;
-        this.recordingLength = 0;
         this.numChannels = 1;
 
         this.internalLeftChannel = null;
-        this.internalRecordingLength = null;
-
         // текущий аудио файл
         this.blob = null;
-
+        // размер буфера записываемого wav файла
         this.BUFFER_SIZE = 2048;
         // определяем максимальный размер аудио файла
-        this.BUFF_ARR_SIZE = 40/* * 100*/;
+        this.BUFF_ARR_SIZE = 40 * 100;
         // тэг аудио проигрывателя на странице html
         this.AUDIO_FILE_TAG = "playback";
+
+        this.TARGET_SAMPLE_RATE = 8000;
+        // объект смены частоты wav файла
+        this.resampler = null;
     }
 
     onMediaSuccess = ( stream ) => {
         this.audioContextType = window.AudioContext || window.webkitAudioContext;
         this.localStream = stream;
         this.track = this.localStream.getTracks( )[ 0 ];
-
         this.context = new this.audioContextType( );
+
+        this.resampler = new Resampler( this.context.sampleRate, this.TARGET_SAMPLE_RATE, this.numChannels, this.BUFFER_SIZE );
+
         var source = this.context.createMediaStreamSource( this.localStream );
 
         if ( !this.context.createScriptProcessor ) {
@@ -45,12 +48,11 @@ class AudioProcessing {
         }
 
         this.node.onaudioprocess = ( e ) => {
-            var left = e.inputBuffer.getChannelData(0);
+            var left = this.resampler.resample( e.inputBuffer.getChannelData( 0 ) );
             if ( !this.recording )
                 return;
             if ( this.leftchannel.length < this.BUFF_ARR_SIZE ) {
                 this.leftchannel.push( new Float32Array( left ) );
-                this.recordingLength += this.bufferSize;
             }
             else {
                 this.leftchannel.splice( 0, 1 );
@@ -82,16 +84,14 @@ class AudioProcessing {
         this.recording = false;
         //console.log(this.leftchannel.slice(0));
         this.internalLeftChannel = this.leftchannel.slice( 0 );
-        this.internalRecordingLength = this.recordingLength;
 
-        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.internalRecordingLength );
+        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.TARGET_SAMPLE_RATE );
 
         this.leftchannel.length = 0;
-        this.recordingLength = 0;
         this.recording = true;
     }
 
-    // виртуальные метод обработки текущего аудио-файла
+    // pure virtual метод обработки текущего аудио-файла
     processing( ) {
         //console.log( "audioProcessing processing" );
         //console.log( this.localStream.active );
@@ -108,7 +108,6 @@ class AudioProcessing {
             this.leftchannel = [ ];
         }
         this.localStream = null;
-        this.recordingLength = 0;
         if ( this.speechHark ) this.speechHark.stop( );
     }
 

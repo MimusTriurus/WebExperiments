@@ -102,6 +102,7 @@
     <Content Include="app\static\app\scripts\app.js" />
     <Content Include="app\static\app\scripts\audioProcessing\audioProcessing.js" />
     <Content Include="app\static\app\scripts\audioProcessing\audioSplitter.js" />
+    <Content Include="app\static\app\scripts\audioProcessing\resampler.js" />
     <Content Include="app\static\app\scripts\recognition\recognitionTrainer.js" />
     <Content Include="app\static\app\scripts\dictToJson.js" />
     <Content Include="app\static\app\scripts\dynamic-time-warping.js" />
