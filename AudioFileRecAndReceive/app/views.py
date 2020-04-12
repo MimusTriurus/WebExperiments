@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import os
 import json
+import requests
 
 from rhvoice_wrapper import TTS
 from app.mfcc.mfccLoader import loadMfccJson
@@ -60,16 +61,37 @@ def loadMfccData( request ):
     mfccData = json.load( mfccFile )
     return JsonResponse( mfccData, safe = False )
 
+URL = "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
+IAM_TOKEN = "AQVN3w5-7jV6pE6ewRVoRsKSZUhqbLkqawA2AyNk"
+ID_FOLDER = "b1gum09hamrdguk0984d"
+
+def recognizeWithYandexSpeechKit( data ):
+    headers = { 'Authorization': f'Api-Key {IAM_TOKEN}' }
+    params = {
+        'lang': 'ru-RU',
+        'folderId': ID_FOLDER,
+        'sampleRateHertz': 16000,
+        'format' : 'lpcm'
+    }
+    response = requests.post( URL, params = params, headers = headers, data = data )
+    decode_resp = response.content.decode( 'UTF-8' )
+    text = json.loads( decode_resp )
+    return text
+
 #генерация речи
 tts = TTS( threads=1 )
 def text2Speech( request ) :
     FILE_NAME = 'out.wav'
     txt = request.GET.get( 'text2Speech', '' )
     v = request.GET.get( 'voice','aleksandr' )
-    tts.to_file( filename = 'out.wav', text = txt, voice = v, format_ = 'wav', sets = None )
-
+    tts.to_file( filename = FILE_NAME, text = txt, voice = v, format_ = 'wav', sets = None )
     f = open( FILE_NAME,"rb" )
-    response = HttpResponse( f.read( ) )
+    audioData = f.read( )
+
+    recognizedTxt = recognizeWithYandexSpeechKit( audioData )
+    print( recognizedTxt )
+
+    response = HttpResponse( audioData )
     response[ 'Content-Type' ] ='audio/wav'
     response[ 'Content-Length' ] = os.path.getsize( FILE_NAME )
     return response

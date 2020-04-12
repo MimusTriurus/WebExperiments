@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>AudioFileRecAndReceive</Name>
     <RootNamespace>AudioFileRecAndReceive</RootNamespace>
-    <InterpreterId>MSBuild|BaseEnv|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|EnvWebExperiments|$(MSBuildProjectFullPath)</InterpreterId>
     <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup>
@@ -134,6 +134,15 @@
       <Id>BaseEnv</Id>
       <Version>3.7</Version>
       <Description>BaseEnv (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+    <Interpreter Include="EnvWebExperiments\">
+      <Id>EnvWebExperiments</Id>
+      <Version>3.7</Version>
+      <Description>EnvWebExperiments (Python 3.7 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>

@@ -87,6 +87,9 @@ target/
 __pycache__/
 local_settings.py
 
+AudioFileRecAndReceive/EnvWebExperiments/
+AudioFileRecAndReceive/static/admin/
+
 .env
 db.sqlite3
 
