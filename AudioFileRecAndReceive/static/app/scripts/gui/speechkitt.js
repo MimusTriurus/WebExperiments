@@ -138,13 +138,6 @@
         }
     };
 
-    var _annyangSetRecognizedSentence = function( sentences ) {
-        if ( Array.isArray( sentences ) ) {
-            sentences = sentences[ 0 ];
-        }
-        _root.SpeechKITT.setRecognizedSentence( sentences );
-    };
-
     var _saveListeningStatusCookie = function( ) {
         var dtExpiration = new Date( );
         dtExpiration.setTime( dtExpiration.getTime( ) + 60000 * _minutesToRememberStatus );

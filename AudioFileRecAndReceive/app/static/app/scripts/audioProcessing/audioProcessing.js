@@ -85,15 +85,10 @@ class AudioProcessing {
         this.speechHark.on( 'stopped_speaking', this.onSpeechEnd );
     }
 
-    // абстрактный метод
-    onSpeechOn( ) {
-    }
-
     // система зафиксировала речь
     onSpeechStart = ( ) => {
         console.log( 'start speaking' );
         this.speechOn = true;
-        this.onSpeechOn( );
     }
     // речь закончилась
     onSpeechEnd = ( ) => {

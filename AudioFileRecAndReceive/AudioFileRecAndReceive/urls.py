@@ -12,6 +12,9 @@ from app import forms, views
 urlpatterns = [
     path('', views.home, name='home'),
 
+    path('emk/', views.emk, name='emk'),
+    path('emk/loadMfccData/', views.loadMfccData, name='loadMfccData'),
+
     path('recognitionTrainer/', views.recognitionTrainer, name='recognitionTrainer'),
     path('recognitionWorker/', views.recognitionWorker, name='recognitionWorker'),
 

@@ -11,6 +11,12 @@ import argparse
 from rhvoice_wrapper import TTS
 from app.mfcc.mfccLoader import loadMfccJson
 
+from app.NLP.Facts import *
+from app.NLP.Rules import *
+
+def emk(request):
+    return render( request, 'app/EMK/index.html' )
+
 # главное меню
 def home(request):
     return render( request, 'app/mainMenu.html' )
@@ -97,10 +103,50 @@ def synthesizeWithYandexSpeechKit( text ) :
         for chunk in resp.iter_content( chunk_size = None ):
             yield chunk
 
+
+# 1. покажи медицинскую карту Григория Петрова		            -> *проигрышь звука*
+# 2. у пациента имеются аллергические реакции на лекарства?		-> У пациента алергия на ибупрофен
+# 3. покажи результаты анализов за 10 декабря	                -> *проигрышь звука*
+# 4. у пациента есть жалобы?			                        -> Петров жаловался на сильные боли в ноге
+# 5. выпиши рецепт на фентанил 			                        -> *проигрышь звука*
+def nlpProcessing( txt ) :
+    parser = Parser( CMD_SHOW_MED_CARD )
+    for match in parser.findall( txt ):
+        jsonData = json.dumps( {'result' : txt, 'cmd': match.fact.action, 'doc': match.fact.doc, 'name' : ( match.fact.name.first + ' ' + match.fact.name.last ) }, ensure_ascii=False )
+        print( jsonData )
+        return jsonData
+    ###########################################################################################
+    parser = Parser( CMD_ALERGIC )
+    for match in parser.findall( txt ):
+        jsonData = json.dumps( {'result' : txt, 'cmd': match.fact.action, 'doc': match.fact.doc, 'value' : match.fact.value }, ensure_ascii=False )
+        print( jsonData )
+        return jsonData
+    ###########################################################################################
+    parser = Parser( CMD_ANALYZES )
+    for match in parser.findall( txt ):
+        jsonData = json.dumps( {'result' : txt, 'cmd': match.fact.action, 'doc': match.fact.doc, 'date' : ( match.fact.day + ' ' + match.fact.month ) }, ensure_ascii=False )
+        print( jsonData )
+        return jsonData
+    ###########################################################################################
+    parser = Parser( CMD )
+    for match in parser.findall( txt ):
+        jsonData = json.dumps( {'result' : txt, 'cmd': match.fact.action }, ensure_ascii=False )
+        print( jsonData )
+        return jsonData
+    ###########################################################################################
+    parser = Parser( CMD_RECIPE )
+    for match in parser.findall( txt ):
+        jsonData = json.dumps( {'result' : txt, 'cmd': match.fact.action, 'doc': match.fact.doc, 'value' : match.fact.value }, ensure_ascii=False )
+        print( jsonData )
+        return jsonData
+
 @csrf_exempt
 def speech2Text( request ):
     result = recognizeWithYandexSpeechKit( request.body )
-    return JsonResponse( result, safe = False )
+
+    jsonData = nlpProcessing( result['result'] )
+
+    return JsonResponse( jsonData, safe = False )
 
 #генерация речи
 tts = TTS( threads=1 )
@@ -112,6 +158,10 @@ def text2Speech( request ) :
     f = open( FILE_NAME,"rb" )
     audioData = f.read( )
     f.close( )
+
+    parser = Parser( CMD_SHOW_MED_CARD )
+    for match in parser.findall( txt ):
+        print( match.fact )
 
     #recognizedTxt = recognizeWithYandexSpeechKit( audioData )
     #print( recognizedTxt )

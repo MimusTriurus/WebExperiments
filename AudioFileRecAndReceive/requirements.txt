@@ -3,3 +3,6 @@ rhvoice-wrapper >= 0.5.1
 rhvoice-wrapper-bin >= 0.2.0
 rhvoice-wrapper-data >= 0.2.0
 requests
+pymorphy2
+yargy
+natasha

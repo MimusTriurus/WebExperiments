@@ -43,17 +43,6 @@
         this.displayTextCallback = callback;
     }
 
-    onSpeechOn( ) {
-        super.onSpeechOn( );
-        console.log( "worker speech end" );
-        /*
-        if ( this.displayTextCallback != null )
-            this.displayTextCallback( "" );
-        */
-        if ( this.stopListenCallback != null )
-            this.stopListenCallback;
-    }
-
     processing( ) {
         super.processing( );
         // инициируем распознавание речи на сервере
@@ -64,11 +53,12 @@
             if ( this.stopListenCallback != null )
                 this.stopListenCallback( );
 
-
+            // отпправка аудио на сервер для распознавания
+            
             var fName = 'buffer.wav';
             if ( this.blob )
                 Utils.speech2Text( this.blob, fName, this.displayTextCallback );
-
+            
         }
         else { // распознавание ключевого слова "вита" в браузере
             let result = Recognize.recognize( this.internalLeftChannel, this.setStateMsgFunc );

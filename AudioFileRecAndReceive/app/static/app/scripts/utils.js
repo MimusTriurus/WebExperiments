@@ -110,8 +110,9 @@ class Utils {
         xhr.onreadystatechange = function ( ) {
             if ( xhr.readyState === 4 && xhr.status === 200 ) {
                 var s2tResultJson = JSON.parse( xhr.responseText );
+                var dict = JSON.parse( s2tResultJson );
                 if ( callback )
-                    callback( s2tResultJson.result );
+                    callback( dict );
             }
         };
         xhr.send( blob );

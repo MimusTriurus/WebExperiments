@@ -1,0 +1,830 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0040)https://www.ehrscape.com/flip/index.html -->
+<html lang="en" class=" js csstransforms3d csstransitions csstransformspreserve3d" style="">
+{% load static %}
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ГолВита</title>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/bootflat.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/font-awesome.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/bookblock.css' %}">
+
+	<!-- custom demo style -->
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/flip.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/style/flip/pushy.css' %}">
+
+	<script src="{% static 'app/scripts/flip/modernizr.custom.js' %}"></script>
+</head>
+
+<body class="">
+	<audio id='myaudio'  preload= 'auto' type="audio/wav"></audio>
+
+	<!-- Боковое меню навигации -->
+	<!--nav id="toc-menu" class="pushy pushy-left">
+		<ul>
+			<li data-category="Laboratory report">
+				<a href="https://www.ehrscape.com/flip/index.html#">Laboratory report
+					<span>04-Mar-2014</span>
+				</a>
+			</li>
+			<li data-category="Laboratory report">
+				<a href="https://www.ehrscape.com/flip/index.html#">Laboratory report
+					<span>19-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Laboratory report">
+				<a href="https://www.ehrscape.com/flip/index.html#">Laboratory report
+					<span>03-Feb-2014</span>
+				</a></li>
+			<li data-category="Laboratory report">
+				<a href="https://www.ehrscape.com/flip/index.html#">Laboratory report
+					<span>18-Jan-2014</span>
+				</a>
+			</li>
+			<li data-category="Medical diagnosis">
+				<a href="https://www.ehrscape.com/flip/index.html#">Medical diagnosis
+					<span>10-Mar-2014</span>
+				</a>
+			</li>
+			<li data-category="Medical diagnosis">
+				<a href="https://www.ehrscape.com/flip/index.html#">Medical diagnosis
+					<span>18-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Medical diagnosis">
+				<a href="https://www.ehrscape.com/flip/index.html#">Medical diagnosis
+					<span>14-Jan-2014</span>
+				</a>
+			</li>
+			<li data-category="Medical diagnosis">
+				<a href="https://www.ehrscape.com/flip/index.html#">Medical diagnosis
+					<span>04-Jan-2014</span>
+				</a>
+			</li>
+			<li data-category="Medications">
+				<a href="https://www.ehrscape.com/flip/index.html#">Medications
+					<span>05-Jan-2014</span>
+				</a>
+			</li>
+			<li data-category="Parental Growth">
+				<a href="https://www.ehrscape.com/flip/index.html#">Parental Growth
+					<span> - </span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>03-Mar-2014</span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>27-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>27-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>26-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>06-Feb-2014</span>
+				</a>
+			</li>
+			<li data-category="Vital Signs">
+				<a href="https://www.ehrscape.com/flip/index.html#">Vital Signs
+					<span>22-Jan-2014</span>
+				</a>
+			</li>
+			<li data-category="Allergies">
+				<a href="https://www.ehrscape.com/flip/index.html#">Allergies
+				</a>
+			</li>
+		</ul>
+	</nav-->
+	<!-- Site Overlay -->
+	<!--div class="site-overlay"></div-->
+	<!-- Content -->
+	<div id="container" class="">
+		<div class="bb-custom-wrapper">
+
+			<div id="bb-bookblock" class="bb-bookblock bb-vertical">
+				<!-- заглавная страница (Удалить?)-->
+
+				<div class="bb-item" style="display: block;" id="base">
+					<div class="bb-custom-firstpage">
+						<h1>Вита
+							<span>Голосовой ассиcтент врача</span>
+						</h1>
+						<div class="logo"></div>
+					</div>
+				</div>
+
+				<!-- главное меню (выбор категории) -->
+				<div class="bb-item" style="display: none;">
+					<div class="bb-custom-categories">
+						<h1>Электронная медицинская карта</h1>
+						<h2 id="patient"></h2>
+						<h2></h2>
+						<div id="catList1">
+							<div class="box">
+								<span>Анализы</span>
+							</div>
+							<div class="box">
+								<span>Диагнозы</span>
+							</div>
+							<div class="box">
+								<span>Лекарства</span>
+							</div>
+							<!--div class="box">
+								<span>Parental Growth</span>
+							</div-->
+							<div class="box">
+								<span>Показатели</span>
+							</div>
+							<div class="box">
+								<span>Аллергия</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Петров Григорий Алексеевич (муж., 45 лет)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Отчет лаборатории<span> 10 декабря 2019</span></h3>
+								<div class="content-wrapper">
+									<ul>
+										<li class="header">Результаты исследования</li>
+										<ul>
+											<li class="paragraph-label">Наименование: <span>Биохимический анализ крови</span></li>
+											<li class="paragraph-label">Приоритет: <span>Обычный</span></li>
+											<li class="header">Параметры</li>
+											<ul>
+												<li class="header">Билирубин общий</li>
+												<ul>
+													<li class="paragraph-label">Значение: <span class="danger">12.3 мкмоль\л</span></li>
+													<li class="paragraph-label">Результат получен: <span>10.12.2019 03:46</span></li>
+												</ul>
+											</ul>
+										</ul>
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Отчет лаборатории<span> 10 декабря 2019</span></h3>
+								<div class="content-wrapper">
+									<ul>
+										<li class="header">Результаты исследования</li>
+										<ul>
+											<li class="paragraph-label">Наименование: <span>Биохимический анализ крови</span></li>
+											<li class="paragraph-label">Приоритет: <span>Обычный</span></li>
+											<li class="header">Параметры</li>
+											<ul>
+												<li class="header">Билирубин общий</li>
+												<ul>
+													<li class="paragraph-label">Значение: <span class="success">11.1 мкмоль\л</span></li>
+													<li class="paragraph-label">Результат получен: <span>10.12.2019 11:43</span></li>
+												</ul>
+											</ul>
+										</ul>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Laboratory report<span>As of: 03-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Laboratory test result</li><ul><li class="paragraph-label">Test result name: <span>S-CRP</span></li><li class="paragraph-label">Overall test result status: <span>Final</span></li><li class="header">Result group</li><ul><li class="header">S-CRP</li><ul><li class="paragraph-label">Result value: <span class="danger">6.0 mg/L<i class=" fa fa-chevron-circle-up"></i></span></li><li class="paragraph-label">Date Time result issued: <span>03-Feb-2014 at 08:31</span></li></ul></ul></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Laboratory report<span>As of: 18-Jan-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Laboratory test result</li><ul><li class="paragraph-label">Test result name: <span>S-CRP</span></li><li class="paragraph-label">Overall test result status: <span>Final</span></li><li class="header">Result group</li><ul><li class="header">S-CRP</li><ul><li class="paragraph-label">Result value: <span class="danger">12.0 mg/L<i class=" fa fa-chevron-circle-up"></i></span></li><li class="paragraph-label">Date Time result issued: <span>18-Jan-2014 at 23:49</span></li></ul></ul></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Medical diagnosis<span>As of: 10-Mar-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Problem/Diagnosis</li><ul><li class="paragraph-label">Problem/Diagnosis: <span>Acute amoebic dysentery</span></li><li class="paragraph-label">Date of onset: <span>06-Jan-1999 at 12:03</span></li><li class="paragraph-label">Date of resolution/remission: <span>10-Jan-1999 at 23:23</span></li><li class="header">Problem context qualifiers</li><ul><li class="paragraph-label">Active status: <span>Resolved</span></li><li class="paragraph-label">Evolution: <span>Initial assessment</span></li><li class="paragraph-label">Temporal context: <span>Past</span></li><li class="paragraph-label">Episodicity: <span>New</span></li><li class="paragraph-label">Episodic care status: <span>Other current problem</span></li></ul></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Medical diagnosis<span>As of: 18-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Problem/Diagnosis</li><ul><li class="paragraph-label">Problem/Diagnosis: <span>Respiratory syncytial virus pneumonia</span></li><li class="paragraph-label">Date of onset: <span>02-Mar-2009 at 20:21</span></li><li class="paragraph-label">Date of resolution/remission: <span>18-Apr-2009 at 17:19</span></li><li class="header">Problem context qualifiers</li><ul><li class="paragraph-label">Certainty: <span>Confirmed</span></li><li class="paragraph-label">Category: <span>Condition</span></li><li class="paragraph-label">Active status: <span>Resolved</span></li><li class="paragraph-label">Evolution: <span>Interim/working assessment</span></li><li class="paragraph-label">Episodic care status: <span>Other current problem</span></li></ul></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Medical diagnosis<span>As of: 14-Jan-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Problem/Diagnosis</li><ul><li class="paragraph-label">Problem/Diagnosis: <span>Superficial frostbite of neck</span></li><li class="paragraph-label">Date of onset: <span>05-Dec-1983 at 07:04</span></li><li class="paragraph-label">Date of resolution/remission: <span>10-Dec-1983 at 07:04</span></li><li class="header">Problem context qualifiers</li><ul><li class="paragraph-label">Impact: <span>Significant</span></li><li class="paragraph-label">Category: <span>Functional limitation</span></li><li class="paragraph-label">Active status: <span>Resolved</span></li><li class="paragraph-label">Episodic care status: <span>Other current problem</span></li></ul></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Medical diagnosis<span>As of: 04-Jan-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Problem/Diagnosis</li><ul><li class="paragraph-label">Problem/Diagnosis: <span>Conductive hearing loss, bilateral</span></li><li class="paragraph-label">Date of onset: <span>04-Mar-2009 at 05:57</span></li><li class="header">Problem context qualifiers</li><ul><li class="paragraph-label">Certainty: <span>Definite</span></li><li class="paragraph-label">Impact: <span>Significant</span></li><li class="paragraph-label">Category: <span>Condition</span></li><li class="paragraph-label">Active status: <span>Active</span></li><li class="paragraph-label">Evolution: <span>Final assessment</span></li><li class="paragraph-label">Episodicity: <span>Ongoing</span></li><li class="paragraph-label">Episodic care status: <span>Primary diagnosis</span></li></ul></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Medications<span>As of: 05-Jan-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Medication instruction</li><ul><li class="header">Order</li><ul><li class="paragraph-label">Medicine: <span>Fortecortin (deksametazon) 2 mg tbl</span></li><li class="header">Dose</li><ul><li class="paragraph-label">Quantity: <span>6.0 mg</span></li></ul><li class="header">Medication timing</li><ul><li class="paragraph-label">Start date: <span>05-Jan-2014 at 21:28</span></li><li class="paragraph-label">Stop date: <span>12-Jan-2014 at 21:28</span></li></ul></ul></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Parental Growth<span>As of:  - </span></h3>
+								<div class="content-wrapper"><ul><li class="header">Parental growth</li><ul><li class="header">Mother</li><ul><li class="paragraph-label">Age: <span>38y</span></li><li class="paragraph-label">Height: <span>163.0 cm</span></li></ul><li class="header">Father</li><ul><li class="paragraph-label">Age: <span>42y</span></li><li class="paragraph-label">Height: <span>176.0 cm</span></li></ul></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Vital Signs<span>As of: 03-Mar-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>37.7 °C</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>88 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>70 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>163.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>47.6 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>88 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>17 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>97.5 / 100.0</span></li></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Vital Signs<span>As of: 27-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>36.0 °C</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>122 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>83 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>163.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>46.8 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>157 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>18 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>96.5 / 100.0</span></li></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Vital Signs<span>As of: 27-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>37.3 °C</span></li><li class="paragraph-label">Body exposure: <span>Reduced clothing/bedding</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>99 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>70 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>162.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>49.8 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>151 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>17 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>99.9 / 100.0</span></li></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Vital Signs<span>As of: 26-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>36.2 °C</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>101 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>62 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>162.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>48.1 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>113 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>24 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>97.3 / 100.0</span></li></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Vital Signs<span>As of: 06-Feb-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>38.4 °C</span></li><li class="paragraph-label">Body exposure: <span>Naked</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>107 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>58 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>163.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>49.0 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>54 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>16 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>98.5 / 100.0</span></li></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3>Vital Signs<span>As of: 22-Jan-2014</span></h3>
+								<div class="content-wrapper"><ul><li class="header">Body temperature</li><ul><li class="paragraph-label">Temperature: <span>36.7 °C</span></li></ul><li class="header">Blood Pressure</li><ul><li class="paragraph-label">Systolic: <span>96 mm[Hg]</span></li><li class="paragraph-label">Diastolic: <span>59 mm[Hg]</span></li></ul><li class="header">Height/Length</li><ul><li class="paragraph-label">Body Height/Length: <span>164.0 cm</span></li></ul><li class="header">Body weight</li><ul><li class="paragraph-label">Body weight: <span>46.1 kg</span></li></ul><li class="header">Pulse</li><ul><li class="paragraph-label">Rate: <span>119 /min</span></li></ul><li class="header">Respirations</li><ul><li class="paragraph-label">Rate: <span>20 /min</span></li></ul><li class="header">Indirect oximetry</li><ul><li class="paragraph-label">SpO2: <span>96.7 / 100.0</span></li></ul></ul></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bb-item" style="display: none;">
+					<div class="bb-title">
+						<span class="navigation">
+							<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+							<!--<span class="page-control bb-nav-prev"><i class="fa fa-angle-left"></i></span>
+							<span class="page-control bb-nav-next"><i class="fa fa-angle-right"></i></span>
+							<span class="page-control bb-nav-last"><i class="fa fa-angle-double-right"></i></span>-->
+						</span>
+						<h2>Mary Wilkinson (female, 43y)</h2>
+						<span class="navigation" style="text-align: right">
+							<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+						</span>
+					</div>
+					<nav class="nav-rect">
+						<span class="prev bb-nav-prev">
+							<i class="fa fa-angle-left"></i>
+						</span>
+						<span class="next bb-nav-next" style="display: block;">
+							<i class="fa fa-angle-right"></i>
+						</span>
+					</nav>
+					<div class="bb-renderContent">
+						<div class="row">
+							<div class="left col-sm-6">
+								<h3>Allergies<span>As of:  - </span></h3>
+								<div class="content-wrapper"><ul><li class="header">Adverse Reaction - Allergy</li><ul><li class="paragraph-label">Substance/Agent: <span>Egg yolks</span></li><li class="paragraph-label">Recorded: <span>03-Dec-1993 at 04:49</span></li><li class="header">Reaction event summary</li><ul><li class="paragraph-label">Clinical Impact: <span>Significant</span></li><li class="paragraph-label">Certainty: <span>Suspected</span></li></ul></ul><li class="header">Adverse Reaction - Allergy #2</li><ul><li class="paragraph-label">Substance/Agent: <span>Weeds</span></li><li class="paragraph-label">Recorded: <span>15-Apr-1999 at 20:10</span></li><li class="header">Reaction event summary</li><ul><li class="paragraph-label">Clinical Impact: <span>Insignificant</span></li><li class="paragraph-label">Certainty: <span>Resolved</span></li></ul></ul><li class="header">Adverse Reaction - Allergy #3</li><ul><li class="paragraph-label">Substance/Agent: <span>Cows milk</span></li><li class="paragraph-label">Recorded: <span>13-Feb-2010 at 10:34</span></li><li class="header">Reaction event summary</li><ul><li class="paragraph-label">Clinical Impact: <span>Significant</span></li><li class="paragraph-label">Certainty: <span>Suspected</span></li></ul></ul></ul></div>
+							</div>
+							<div class="col-sm-6">
+								<h3><span>As of: </span></h3>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!-- "точки" навигационные -->
+			<div class="scrubber" style="display: block;">
+				<span class="dot selected"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+				<span class="dot"><b></b></span>
+			</div>
+		</div>
+
+	</div><!-- /container -->
+
+	<script src="{% static "app/scripts/dynamic-time-warping.js" %}"></script>
+	<script src="{% static "app/scripts/utils.js" %}"></script>
+	<script src="{% static "app/scripts/wildemitter.js" %}"></script>
+	<script src="{% static "app/scripts/hark.js" %}"></script>
+	<script src="{% static "app/scripts/meyda.js" %}"></script>
+
+	<script src="{% static "app/scripts/audioProcessing/resampler.js" %}"></script>
+	<script src="{% static "app/scripts/audioProcessing/audioProcessing.js" %}"></script>
+	<script src="{% static "app/scripts/recognition/recognize.js" %}"></script>
+	<script src="{% static "app/scripts/recognition/recognitionWorker.js" %}"></script>
+
+	<script src="{% static "app/scripts/gui/speechkitt.js" %}"></script>
+
+	<script id="pagemarkup-template" type="text/x-handlebars-template">
+	</script>
+	<!-- Главное меню -->
+	<div class="bb-item">
+		<div class="bb-title">
+			<span class="navigation">
+				<span class="nav-toggle page-control"><i class="fa fa-bars"></i></span>
+			</span>
+			<h2></h2>
+			<span class="navigation" style="text-align: right">
+				<span class="page-control bb-nav-first"><i class="fa fa-chevron-left"></i></span>
+			</span>
+		</div>
+		<nav class="nav-rect">
+			<span class="prev bb-nav-prev">
+				<i class="fa fa-angle-left"></i>
+			</span>
+			<span class="next bb-nav-next">
+				<i class="fa fa-angle-right"></i>
+			</span>
+		</nav>
+		<div class="bb-renderContent">
+			<div class="row">
+				<div class="left col-sm-6">
+
+				</div>
+				<div class="col-sm-6">
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="{% static 'app/scripts/flip/jquery-2.1.1.min.js' %}"></script>
+	<script src="{% static 'app/scripts/flip/bootstrap.min.js' %}"></script>
+	<script src="{% static 'app/scripts/flip/icheck.min.js' %}"></script>
+	<script src="{% static 'app/scripts/flip/jquery.touchSwipe-1.2.5.js' %}"></script>
+	<script src="{% static 'app/scripts/flip/handlebars-v1.3.0.js' %}"></script>
+	<script src="{% static 'app/scripts/flip/pushy.js' %}"></script>
+
+	<script src="{% static 'app/scripts/flip/jquery.bookblock.js' %}"></script> <!-- Modified -->
+	<script src="{% static 'app/scripts/flip/Iso8601Period.js' %}"></script>
+
+	<script src="{% static 'app/scripts/flip/flip.js' %}"></script>
+
+	<script>
+		var Page = ( function ( ) {
+
+			var config, init = function ( ) {
+
+				config = {
+					$bookBlock: $( '#bb-bookblock' ),
+					$navNext: $( '.cover-flip, .bb-nav-next' ),
+					$navPrev: $( '.bb-nav-prev' ),
+					$navFirst: $( '.bb-nav-first' ),
+					$navLast: $( '.bb-nav-last' ),
+					$dotControl: $( '#id' )
+				};
+
+				config.$bookBlock.bookblock( {
+					menuEl: $( ".scrubber" ).hide( )
+				} );
+
+				initEvents();
+
+			},
+				initEvents = function ( ) {
+
+					var $slides = config.$bookBlock.children( );
+
+					// add navigation events
+					config.$navNext.on( 'click touchstart', function () {
+						config.$bookBlock.bookblock( 'next' );
+						console.log( "next" );
+						return false;
+					} );
+
+					config.$dotControl.on( 'click touchstart', function () {
+						console.log( "!" );
+						config.$bookBlock.bookblock( 'jump', 6 );
+						return false;
+					} );
+
+					config.$navPrev.on( 'click touchstart', function () {
+						config.$bookBlock.bookblock( 'prev' );
+						return false;
+					} );
+
+					config.$navFirst.on( 'click touchstart', function () {
+						config.$bookBlock.bookblock( 'jump', 2 );
+						return false;
+					} );
+
+					config.$navLast.on( 'click touchstart', function () {
+						config.$bookBlock.bookblock( 'last' );
+						return false;
+					} );
+
+					// add keyboard events
+					$( document ).keydown( function ( e ) {
+						var keyCode = e.keyCode || e.which,
+							arrow = {
+								left: 37,
+								up: 38,
+								right: 39,
+								down: 40
+							};
+
+						switch ( keyCode ) {
+							case arrow.left:
+								config.$bookBlock.bookblock( 'prev' );
+								break;
+							case arrow.right:
+								config.$bookBlock.bookblock( 'next' );
+								break;
+						}
+					} );
+
+					config.$bookBlock.bookblock( 'menu' );
+				};
+
+			return { init: init };
+
+		} )( );
+	</script>
+
+	<script>
+
+		$( '#bb-bookblock' ).flipRecords( );
+
+	</script>
+
+	<!---------------------------------------------------------------------------------->
+
+	<script>
+		var audio = document.getElementById( 'myaudio' );
+
+		function text2Speech( text ) {
+            var xhr = new XMLHttpRequest( );
+            var params = 'text2Speech=' + encodeURIComponent(text) + '&'
+                + 'voice=anna';
+           
+            xhr.open( 'GET', '/text2Speech?' + params, true );
+            xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
+            xhr.responseType = 'blob';
+            xhr.onload = function( evt ) {
+                    var blob = new Blob( [ xhr.response ], { type: 'audio/wav' } );
+                    var objectUrl = URL.createObjectURL( blob );
+                    audio.src = objectUrl;
+                    audio.onload = function( evt ) {
+                    URL.revokeObjectURL( objectUrl );
+                };
+                audio.play( );
+            };
+            xhr.send( );
+        }
+
+		function nlpShowCmd( data ) {
+			text2Speech( 'Выполняю' );
+			switch ( data.doc ) {
+				case 'медицинская карта':
+					console.log( 'мед карта:' + data.name );
+					var el = document.getElementById( "patient" );
+					el.append( 'Петров Григорий Алексеевич' );
+					$( '#bb-bookblock' ).bookblock( 'jump', 2 );
+					break;
+				case 'результаты анализов':
+					console.log( 'анализы:' + data.date );
+					$( '#bb-bookblock' ).bookblock( 'jump', 3 );
+					break;
+			}
+		}
+
+		function nlpAllergicCmd( data ) {
+			text2Speech( 'У пациент аллергия на антибиотики' );
+		}
+
+		function nlpPainCmd( data ) {
+			text2Speech( 'Пациент жалуется на боль в ноге' );
+		}
+
+		function nlpRecept( data ) {
+			if ( data.value != null )
+				text2Speech( 'выписываю рецепт на ' + data.value );
+			else
+				console.log( 'nlpRecept value is null' );
+		}
+
+		function nlpProcessing( data ) {
+			console.log( 'nlpProcessing...' );
+			console.log( data );
+			if ( data != null ) {
+				if ( data.cmd != null ) {
+					switch ( data.cmd ) {
+						case 'покажи':
+							nlpShowCmd( data )
+							break;
+						case 'имеющийся':
+							nlpAllergicCmd( data );
+							break;
+						case 'жалоба':
+							nlpPainCmd( data );
+							break;
+						case 'выпиши':
+							nlpRecept( data );
+							break;
+					}
+				}
+			}
+		}
+
+
+		var body, num, array, width, context, logo, myElements, analyser, src, height;
+
+        function loop( ) {
+            window.requestAnimationFrame( loop );
+            if ( !audioProcessing.speechOn )
+                return;
+            audioProcessing.analyser.getByteFrequencyData( array );
+            for ( var i = 0; i < num; i++ ) {
+                height = array[ i + num ];
+                myElements[ i ].style.minHeight = height + 'px';
+                myElements[ i ].style.opacity = 0.008 * height;
+            }
+        }
+
+		body = document.getElementById( 'base' );
+        num = 32;
+        array = new Uint8Array( num * 2 );
+        width = 10;
+        for ( var i = 0; i < num; i++ ) {
+            logo = document.createElement( 'div' );
+            logo.className = 'logo';
+            logo.style.background = 'green';
+            logo.style.minWidth = width + 'px';
+            body.appendChild( logo );
+        }
+        myElements = document.getElementsByClassName( 'logo' );
+
+		var audioProcessing = new RecognitionWorker();
+		audioProcessing.mfccDataLoad();
+
+		window.onload = function ( ) {
+			navigator.mediaDevices.getUserMedia( {
+				audio: true
+			} ).then( stream => {
+
+				audioProcessing.setStartListenCallback( function ( ) {
+                    //$( '#bb-bookblock' ).bookblock( 'jump', 6 );
+					text2Speech("Я вас слушаю");
+					SpeechKITT.onStart( );
+				} );
+				audioProcessing.setStopListenCallback( SpeechKITT.onEnd );
+				//audioProcessing.setDisplayTextCallback( SpeechKITT.setInstructionsText );
+
+				audioProcessing.setDisplayTextCallback( function ( data ) {
+					if ( data != null ) {
+						nlpProcessing( data );
+						if ( data.result != null ) {
+							SpeechKITT.setInstructionsText( data.result );
+							SpeechKITT.onStart();
+						}
+					}
+				} );
+
+				audioProcessing.startListening( stream );
+
+			} ).catch( error => {
+				alert( error + '\r\n\ Отклонено. Страница будет обновлена!' );
+				location.reload();
+			} );
+		};
+
+		SpeechKITT.setStartCommand( function ( ) {
+
+		} );
+
+		SpeechKITT.setAbortCommand( function ( ) {
+			
+		} );
+
+		SpeechKITT.setStylesheet( '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat.css' );
+		//SpeechKITT.setStylesheet( '#skitt-ui{font-family:Lato,Helvetica,Arial,sans-serif;font-size:16px}' );
+		SpeechKITT.vroom( );
+
+	</script>
+
+</body>
+
+</html>
