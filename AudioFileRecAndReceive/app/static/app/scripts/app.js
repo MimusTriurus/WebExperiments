@@ -18,7 +18,7 @@ recordButton.addEventListener("click", startRecording);
 stopButton.addEventListener("click", stopRecording);
 pauseButton.addEventListener("click", pauseRecording);
 
-function startRecording() {
+function startRecording( ) {
     var constraints = { audio: true, video:false }
 
 	recordButton.disabled = true;

@@ -33,12 +33,6 @@
 
 <body>
     <div class='pane' id='ira'>
-        <button id="startButton">Start</button>
-        <button id="stopButton">Stop</button>
-
-        <audio controls id="playback">
-            <source id="audioSrc" src="{% static "app/resources/audio/test/person3/hello/01.wav" %}" />
-        </audio>
 
         <script src="{% static "app/scripts/utils.js" %}"></script>
         <script src="{% static "app/scripts/wildemitter.js" %}"></script>
@@ -50,6 +44,49 @@
         <script src="{% static "app/scripts/audioProcessing/audioProcessing.js" %}"></script>
         <script src="{% static "app/scripts/recognition/recognize.js" %}"></script>
         <script src="{% static "app/scripts/recognition/recognitionWorker.js" %}"></script>
+
+        <script src="{% static "app/scripts/gui/speechkitt.js" %}"></script>
+
+        <script>
+            var audioProcessing = new RecognitionWorker( );
+            audioProcessing.mfccDataLoad( );
+
+            window.onload = function( ) {
+                navigator.mediaDevices.getUserMedia( {
+                    audio: true
+                } ).then( stream => {
+
+                    audioProcessing.setStartListenCallback( SpeechKITT.onStart );
+                    audioProcessing.setStopListenCallback( SpeechKITT.onEnd );
+                    //audioProcessing.setDisplayTextCallback( SpeechKITT.setInstructionsText );
+
+                    audioProcessing.setDisplayTextCallback( function ( text ) {
+                        SpeechKITT.onStart( );
+                        SpeechKITT.setInstructionsText( text );
+                    } );
+
+                    
+
+                    audioProcessing.startListening( stream );
+
+                } ).catch( error => {
+                    alert( error + '\r\n\ Отклонено. Страница будет обновлена!' );
+                    location.reload( );
+                } );
+            };
+
+            SpeechKITT.setStartCommand( function ( ) {
+
+            } );
+
+            SpeechKITT.setAbortCommand( function ( ) {
+                //audioProcessing.stopListening( );
+            } );
+
+            SpeechKITT.setStylesheet( '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat.css' );
+            SpeechKITT.vroom( );
+            
+        </script>
     </div>
 </body>
 

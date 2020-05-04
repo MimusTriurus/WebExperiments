@@ -5,26 +5,25 @@ class Recognize {
     static mfccHistoryArr = [ ];
 
     static bufferSize = 2048;
-    static _buffArrSize = 40;      // 40   / 70
+    static _buffArrSize = 40;
     static _minNumberOfVariants = 2;
     static _minKnnConfidence = 0;
     static _minDTWDist = 1000;
     static K_factor = 3;
     // порог "схожести"
-    static CONFIDENCE_THRESHOLD = 0.75;
+    static CONFIDENCE_THRESHOLD = 0.7;
 
     static mfccDistArr = [ ];
 
     static bufferMfcc;
     static buffer = { };
 
-    static dictionary = [ 'person1' ];
+    static dictionary = [ 'vita' ];
 
     static train( _buffer, transcript, setStateFunc ) {
-        //setStateFunc( "training" + _buffer );
         this.buffer = _buffer;
         Meyda.bufferSize = this.bufferSize;
-        this.bufferMfcc = this.createMfccMetric( );
+        this.bufferMfcc = this.createMfccMetric();
         this.mfccHistoryArr.push( {
             mfcc: this.bufferMfcc,
             transcript: transcript
@@ -45,18 +44,19 @@ class Recognize {
         var knnClosest;
         if ( this.K_factor <= this.mfccHistoryArr.length ) {
             knnClosest = this.getMostSimilarKnn( this.mfccDistArr, this.compareMfcc, this.K_factor );
+            if ( knnClosest )
+                console.log( "confidence: " + knnClosest.confidence );
             if ( knnClosest && ( knnClosest.confidence < this._minKnnConfidence ) ) {
                 knnClosest = null;
             }
         }
-        if ( !knnClosest || knnClosest.confidence < CONFIDENCE_THRESHOLD ) {
+        if ( !knnClosest || knnClosest.confidence < this.CONFIDENCE_THRESHOLD ) {
             this.endTime = Utils.getTimestamp( );
             setStateFunc( "not recognized" );
-            console.log( "recognition locally failed or returned no good result" );
             return null;
         }
         else { // если слово распознано, то дополняем обучающую выборку
-            this.mfccHistoryArr.push({
+            this.mfccHistoryArr.push( {
                 mfcc: this.bufferMfcc,
                 transcript: knnClosest.transcript
             });
@@ -67,9 +67,6 @@ class Recognize {
     };
 
 
-    /**
-     * calculate DTW distance from dictionary mfcc history
-     */
     static calculateDistanceArr( ) {
         this.mfccDistArr = [];
         for ( var i = 0; i < this.mfccHistoryArr.length; i++ ) {
@@ -87,9 +84,6 @@ class Recognize {
     }
 
 
-    /**
-     * search in dictionary
-     */
     static isInDictionary( word ) {
         for ( var i = 0; i < this.dictionary.length; i++ ) {
             if ( this.dictionary[ i ] === word )
@@ -98,12 +92,6 @@ class Recognize {
         return false;
     }
 
-    /**
-     * get the most similar transcript from audio mfcc history array, using Knn Algorithm
-     * @param {*} Items 
-     * @param {*} CompFunc 
-     * @param {*} k 
-     */
     static getMostSimilarKnn( Items, CompFunc, k ) {
         if (!Items || Items.length === 0) {
             console.log("Items is empty");
@@ -144,11 +132,12 @@ class Recognize {
             }
         }
 
-        if ( maxElm && maxElm.transcript === '' )
+        if ( maxElm && maxElm.transcript === '' ) {
             maxElm = null;
+            //console.log('maxElm is null');
+        }
 
         if ( maxElm ) {
-            // calculate confidence
             var sum = 0, count = 0;
             for ( i = 0; i < items.length; i++ ) {
                 if ( items[ i ].transcript === maxElm.transcript ) {
@@ -166,9 +155,6 @@ class Recognize {
         return Math.pow( Math.E, -1 / 2 * Math.pow( t / 1000, 2 ) );
     }
 
-    /**
-     * calculate audio buffer mfcc data
-     */
     static createMfccMetric( ) {
         var mfccMetricArr = [ ];
         for ( var i = 0; i < this._buffArrSize; i++ ) {
@@ -176,15 +162,13 @@ class Recognize {
                 var mfccMetric = Meyda.extract( "mfcc", this.buffer[ i ] );
                 mfccMetricArr.push( mfccMetric )
             }
+            else {
+                console.log( "wrong: " + this.buffer[ i ].length + "===" + this.bufferSize + " " + ( this.buffer[ i ].length === this.bufferSize )  );
+            }
         }
         return mfccMetricArr;
     }
 
-    /**
-     * Euclidean Distance between two victors
-     * @param {*} p 
-     * @param {*} q 
-     */
     static EuclideanDistance( p, q ) {
         var d = 0;
         if ( p.length !== q.length )
@@ -195,11 +179,6 @@ class Recognize {
         return Math.sqrt( d );
     }
 
-    /**
-     * Mfcc object comparison
-     * @param {*} a 
-     * @param {*} b 
-     */
     static compareMfcc( a, b ) {
         if ( a.dist < b.dist )
             return -1;

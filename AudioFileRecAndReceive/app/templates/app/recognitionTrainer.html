@@ -37,7 +37,7 @@
         <button id="stopButton">Stop</button>
 
         <audio controls id="playback">
-            <source id="audioSrc" src="{% static "app/resources/audio/train/person1/hello/5hello.wav" %}" />
+            <source id="audioSrc" src="{% static "app/resources/trainVita.wav" %}" />
         </audio>
 
         <script src="{% static "app/scripts/utils.js" %}"></script>
@@ -49,6 +49,40 @@
         <script src="{% static "app/scripts/audioProcessing/audioProcessing.js" %}"></script>
         <script src="{% static "app/scripts/recognition/recognize.js" %}"></script>
         <script src="{% static "app/scripts/recognition/recognitionTrainer.js" %}"></script>
+    
+        <script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/speechkitt.min.js"></script>
+
+        <script>
+            var audioProcessing = new RecognitionTrainer( );
+
+            var btnStart = document.getElementById( "startButton" );
+            btnStart.addEventListener( "click", function () {
+                /*
+                navigator.mediaDevices.getUserMedia( {
+                    audio: true
+                } ).then( stream => {
+                    audioProcessing.startListening( stream );
+                } ).catch( error => {
+                    alert( error + '\r\n\ Отклонено. Страница будет обновлена!' );
+                    location.reload( );
+                } );
+                */
+                audioProcessing.startListening( Utils.getAudioStream( ) );
+            } );
+
+            var btnStop = document.getElementById( "stopButton" );
+            btnStop.addEventListener( "click", function ( ) {
+                audioProcessing.stopListening( );
+                audioProcessing.mfccDataSend( );
+            } );
+
+            this.console.log( "recognition trainer loaded" );
+
+            //SpeechKITT.setStartCommand(btnStart.click, btnStart);
+            SpeechKITT.setStylesheet( '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat.css' );
+            SpeechKITT.vroom( );
+            
+        </script>
     </div>
 </body>
 

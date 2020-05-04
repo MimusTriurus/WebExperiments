@@ -22,7 +22,11 @@ urlpatterns = [
     path('speechSynthesis/', views.speechSynthesis, name='speechSynthesis'),
 
     path('upload/', views.upload, name='upload'),
+    path('speech2Text/', views.speech2Text, name='speech2Text'),
+
     path('text2Speech/', views.text2Speech, name='text2Speech'),
     path('recognitionTrainer/sendMfccData/', views.sendMfccData, name='sendMfccData'),
     path('recognitionWorker/loadMfccData/', views.loadMfccData, name='loadMfccData'),
+
+    path('testSpeechKITT/', views.testSpeechKITT, name='testSpeechKITT'),
 ]

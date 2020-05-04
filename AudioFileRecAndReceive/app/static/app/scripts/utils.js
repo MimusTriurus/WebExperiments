@@ -62,7 +62,7 @@ class Utils {
         return blob;
     }
 
-    // необходима для загрузки файла на сервер
+    // необходима для загрузки файла на django сервер
     static getCookie( name ) {
         var cookieValue = null;
         if ( document.cookie && document.cookie != '' ) {
@@ -77,17 +77,42 @@ class Utils {
         }
         return cookieValue;
     }
-    // загрузка wav файла на сервер
+    /**
+     * Загрузка аудио файла на сервер
+     * @param {any} blob аудио файл для распознавания
+     * @param {any} fName колбэк с рузультатами распознавания
+     */
     static upload( blob, fName = 'buffer.wav' ) {
         var csrftoken = Utils.getCookie( 'csrftoken' );
         var xhr = new XMLHttpRequest( );
         var params = '?fName=' + fName
         xhr.open( 'POST', '../upload/' + params, true );
         xhr.setRequestHeader( "X-CSRFToken", csrftoken );
-        xhr.setRequestHeader( "MyCustomHeader", "Put anything you need in here, like an ID" );
+        //xhr.setRequestHeader( "MyCustomHeader", "Put anything you need in here, like an ID" );
 
         xhr.upload.onloadend = function ( ) {
             //console.log('Upload complete');
+        };
+        xhr.send( blob );
+    }
+    /**
+     * Отправка аудио на сервер для распознавания и получение результата
+     * @param {any} blob аудио файл для распознавания
+     * @param {any} fName имя аудио файла
+     * @param {any} callback колбэк с рузультатами распознавания
+     */
+    static speech2Text( blob, fName = 'buffer.wav', callback = null ) {
+        var csrftoken = Utils.getCookie( 'csrftoken' );
+        var xhr = new XMLHttpRequest();
+        var params = '?fName=' + fName
+        xhr.open( 'POST', '../speech2Text/' + params, true );
+        xhr.setRequestHeader( "X-CSRFToken", csrftoken );
+        xhr.onreadystatechange = function ( ) {
+            if ( xhr.readyState === 4 && xhr.status === 200 ) {
+                var s2tResultJson = JSON.parse( xhr.responseText );
+                if ( callback )
+                    callback( s2tResultJson.result );
+            }
         };
         xhr.send( blob );
     }

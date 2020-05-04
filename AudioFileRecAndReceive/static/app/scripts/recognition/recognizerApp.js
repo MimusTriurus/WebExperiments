@@ -1,13 +1,13 @@
 class App {
     constructor( props ) {
-        /******************************************************************************************************/
+
         this.msg = "click start";
         this.modeMsg = "";
         this.statusMsg = "";
         this.trained= false;
         this.currentTrainingIndex = null;
         this.result = '';
-        /*********  Voice *********/
+
         this.audioContextType = null;
         this.localstream = null;
         this.context = null;
@@ -17,7 +17,6 @@ class App {
         this.speechHark = null;
         this.leftchannel = [];
 
-        /********* Settings *********/
         this._stopRecTimeout = 1000;
         this._threshold = -50; // voice dB
         this._harkInterval = 100;
@@ -25,10 +24,6 @@ class App {
         this.numChannels = 1;
     }
 
-    /**
-     * This function will run if the microphone was successfully acquired.
-     * Here we record the data and make a signal when there is a speech start recognized
-     */
     onMediaSuccess = ( stream ) => {
         if ( !this.trained ) {
            this.currentTrainingIndex = 0;
@@ -36,22 +31,18 @@ class App {
         this.audioContextType = window.AudioContext || window.webkitAudioContext;
         this.localStream = stream;
         this.track = this.localStream.getTracks( )[ 0 ];
-        // create the MediaStreamAudioSourceNode
-        // Setup Audio Context
+
         this.context = new this.audioContextType( );
         var source = this.context.createMediaStreamSource( this.localStream );
 
-        // create a ScriptProcessorNode
-        if (!this.context.createScriptProcessor) {
+        if ( !this.context.createScriptProcessor ) {
             this.node = this.context.createJavaScriptNode( Recognize.bufferSize, this.numChannels, this.numChannels );
         } else {
             this.node = this.context.createScriptProcessor( Recognize.bufferSize, this.numChannels, this.numChannels );
         }
 
-        // listen to the audio data, and record into the buffer, 
-        // this is important to catch the fraction of second before the speech started.
-        this.node.onaudioprocess = (e) => {
-            var left = e.inputBuffer.getChannelData(0);
+        this.node.onaudioprocess = ( e ) => {
+            var left = e.inputBuffer.getChannelData( 0 );
 
             if ( !this.recording ) return;
             if ( this.leftchannel.length < Recognize._buffArrSize ) {
@@ -64,12 +55,11 @@ class App {
             }
         }
 
-        source.connect(this.node);
-        this.node.connect(this.context.destination);
+        source.connect( this.node );
+        this.node.connect( this.context.destination );
 
         this.speechHark = initHarker( this.localStream, { interval: this._harkInterval, threshold: this._threshold, play: false, recoredInterval: this._stopRecTimeout } );
         this.speechHark.on( 'speaking', ( ) => {
-            //this.setState({ statusMsg: "recoding" });
             console.log( "recording" );
             setTimeout( ( ) => { this.stopRec(); }, this._stopRecTimeout );
         } );
@@ -77,17 +67,13 @@ class App {
         } );
     }
 
-    /**
-     * stop recording data in the buffer, and process the signal
-     */
     stopRec = ( ) => {
-        //this.setState({ statusMsg: 'stopped recoding' });
-        console.log("stop recording");
+        console.log( "stop recording" );
         this.recording = false;
         var internalLeftChannel = this.leftchannel.slice( 0 );
         var internalRecordingLength = this.recordingLength;
 
-        var blob = Utils.bufferToBlob(internalLeftChannel, internalRecordingLength);
+        var blob = Utils.bufferToBlob( internalLeftChannel, internalRecordingLength );
 
         if ( !blob )
             return;
@@ -98,21 +84,20 @@ class App {
         //var reader = new window.FileReader();
         //reader.readAsDataURL(blob);
 
-        // read the blob and start processing according to the system state (trained or not)
         //reader.onloadend = () => {
-            if (this.trained) {
-                let result = Recognize.recognize(internalLeftChannel, this.setStateMsgFunc);
-                if (result) {
-                    console.log("Great! the result is ===> " + result.transcript + " <=== try more.");
+            if ( this.trained ) {
+                let result = Recognize.recognize( internalLeftChannel, this.setStateMsgFunc );
+                if ( result ) {
+                    console.log( "Great! the result is ===> " + result.transcript + " <=== try more." );
                 }
                 else {
-                    console.log("Didn't Got it! please try to Again loud and clear.");
+                    console.log( "Didn't Got it! please try to Again loud and clear." );
                 }
-                console.log(result);
+                console.log( result );
             }
             else {
-                let success = Recognize.train(internalLeftChannel, Recognize.dictionary[this.currentTrainingIndex % Recognize.dictionary.length], this.setStateMsgFunc);
-                this.traingNextWord(success);
+                let success = Recognize.train( internalLeftChannel, Recognize.dictionary[ this.currentTrainingIndex % Recognize.dictionary.length ], this.setStateMsgFunc );
+                this.traingNextWord( success );
             }
         //}
 
@@ -121,10 +106,6 @@ class App {
         this.recording = true;
     };
 
-    /**
-     * Move to the next word to train the system.
-     * Train the whole dictionary twice
-     */
     traingNextWord = (success) => {
         if (success) {
             // next word

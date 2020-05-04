@@ -1,5 +1,8 @@
 class AudioProcessing {
     constructor( ) {
+        // инициирован поиск ключевого слова
+        this.searchKeyword = true;
+
         this.audioContextType = null;
         this.localstream = null;
         this.context = null;
@@ -7,7 +10,7 @@ class AudioProcessing {
         this.node = null;
         this.recording = true;
         this.speechHark = null;
-        this.leftchannel = [];
+        this.leftchannel = [ ];
         // предзапись с момента начала речи
         this._harkInterval = 100;
         // постзапись с момента окончания речи
@@ -22,13 +25,17 @@ class AudioProcessing {
         // размер буфера записываемого wav файла
         this.BUFFER_SIZE = 2048;
         // определяем максимальный размер аудио файла
-        this.BUFF_ARR_SIZE = 40 * 100;
+        this.BUFF_ARR_SIZE = 40/* * 100*/;
         // тэг аудио проигрывателя на странице html
         this.AUDIO_FILE_TAG = "playback";
 
-        this.TARGET_SAMPLE_RATE = 8000;
+        this.TARGET_SAMPLE_RATE = 16000;
         // объект смены частоты wav файла
         this.resampler = null;
+        // анализатор аудио (для отрисовки гистограммы частот)
+        this.analyser = null;
+        // человеческая речь детектед
+        this.speechOn = false;
     }
 
     onMediaSuccess = ( stream ) => {
@@ -36,11 +43,12 @@ class AudioProcessing {
         this.localStream = stream;
         this.track = this.localStream.getTracks( )[ 0 ];
         this.context = new this.audioContextType( );
+        this.analyser = this.context.createAnalyser( );
 
         this.resampler = new Resampler( this.context.sampleRate, this.TARGET_SAMPLE_RATE, this.numChannels, this.BUFFER_SIZE );
 
         var source = this.context.createMediaStreamSource( this.localStream );
-
+        
         if ( !this.context.createScriptProcessor ) {
             this.node = this.context.createJavaScriptNode( this.BUFFER_SIZE, this.numChannels, this.numChannels );
         } else {
@@ -48,7 +56,12 @@ class AudioProcessing {
         }
 
         this.node.onaudioprocess = ( e ) => {
-            var left = this.resampler.resample( e.inputBuffer.getChannelData( 0 ) );
+            //var left = this.resampler.resample( e.inputBuffer.getChannelData( 0 ) );
+            var left = null;
+            if ( this.searchKeyword )
+                left = e.inputBuffer.getChannelData( 0 );
+            else
+                left = this.resampler.resample( e.inputBuffer.getChannelData( 0 ) );
             if ( !this.recording )
                 return;
             if ( this.leftchannel.length < this.BUFF_ARR_SIZE ) {
@@ -62,19 +75,31 @@ class AudioProcessing {
 
         source.connect( this.node );
         this.node.connect( this.context.destination );
+        source.connect( this.analyser );
+
+        this.node.connect( this.context.destination );
 
         this.speechHark = initHarker(this.localStream, { interval: this._harkInterval, threshold: this._threshold, play: false, recoredInterval: this._stopRecTimeout });
 
         this.speechHark.on( 'speaking', this.onSpeechStart );
         this.speechHark.on( 'stopped_speaking', this.onSpeechEnd );
     }
+
+    // абстрактный метод
+    onSpeechOn( ) {
+    }
+
     // система зафиксировала речь
     onSpeechStart = ( ) => {
         console.log( 'start speaking' );
+        this.speechOn = true;
+        this.onSpeechOn( );
     }
     // речь закончилась
     onSpeechEnd = ( ) => {
         console.log( 'end speaking' );
+        this.speechOn = false;
+
         this.stopRec( );
         this.processing( );
     }
@@ -84,8 +109,10 @@ class AudioProcessing {
         this.recording = false;
         //console.log(this.leftchannel.slice(0));
         this.internalLeftChannel = this.leftchannel.slice( 0 );
-
-        this.blob = Utils.bufferToBlob( this.internalLeftChannel, this.TARGET_SAMPLE_RATE );
+        //var left = this.resampler.resample( e.inputBuffer.getChannelData( 0 ) );
+        this.blob = Utils.bufferToBlob(
+            this.internalLeftChannel,
+            this.TARGET_SAMPLE_RATE );
 
         this.leftchannel.length = 0;
         this.recording = true;

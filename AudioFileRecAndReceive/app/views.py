@@ -1,7 +1,3 @@
-"""
-Definition of views.
-"""
-
 from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
@@ -10,6 +6,7 @@ from django.http import JsonResponse
 import os
 import json
 import requests
+import argparse
 
 from rhvoice_wrapper import TTS
 from app.mfcc.mfccLoader import loadMfccJson
@@ -32,6 +29,9 @@ def trainAndWorkWithMic( request ) :
 # синтез речи
 def speechSynthesis( request ) :
     return render( request, 'app/speechSynthesis.html' )
+
+def testSpeechKITT( request ) :
+    return render( request, 'app/testSpeechKITT.html' )
 
 #сохранение аудио файла на сервере
 @csrf_exempt
@@ -61,7 +61,8 @@ def loadMfccData( request ):
     mfccData = json.load( mfccFile )
     return JsonResponse( mfccData, safe = False )
 
-URL = "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
+URL_RECOGNITION = "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
+URL_SYNTHESIS = "https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize"
 IAM_TOKEN = "AQVN3w5-7jV6pE6ewRVoRsKSZUhqbLkqawA2AyNk"
 ID_FOLDER = "b1gum09hamrdguk0984d"
 
@@ -73,10 +74,33 @@ def recognizeWithYandexSpeechKit( data ):
         'sampleRateHertz': 16000,
         'format' : 'lpcm'
     }
-    response = requests.post( URL, params = params, headers = headers, data = data )
+    response = requests.post( URL_RECOGNITION, params = params, headers = headers, data = data )
     decode_resp = response.content.decode( 'UTF-8' )
     text = json.loads( decode_resp )
     return text
+
+def synthesizeWithYandexSpeechKit( text ) :
+    headers = { 'Authorization': f'Api-Key {IAM_TOKEN}' }
+    params = {
+        'text': text,
+        'lang': 'ru-RU',
+        'folderId': ID_FOLDER,
+        'voice' : 'zahar',
+        #'emotion': 'evil'
+        #'format': 'lpcm',
+        #'sampleRateHertz': 16000
+    }
+    with requests.post( URL_SYNTHESIS, headers = headers, data = params, stream = True ) as resp:
+        if resp.status_code != 200:
+            raise RuntimeError("Invalid response received: code: %d, message: %s" % ( resp.status_code, resp.text ) )
+
+        for chunk in resp.iter_content( chunk_size = None ):
+            yield chunk
+
+@csrf_exempt
+def speech2Text( request ):
+    result = recognizeWithYandexSpeechKit( request.body )
+    return JsonResponse( result, safe = False )
 
 #генерация речи
 tts = TTS( threads=1 )
@@ -87,11 +111,24 @@ def text2Speech( request ) :
     tts.to_file( filename = FILE_NAME, text = txt, voice = v, format_ = 'wav', sets = None )
     f = open( FILE_NAME,"rb" )
     audioData = f.read( )
+    f.close( )
 
-    recognizedTxt = recognizeWithYandexSpeechKit( audioData )
-    print( recognizedTxt )
+    #recognizedTxt = recognizeWithYandexSpeechKit( audioData )
+    #print( recognizedTxt )
+
+    # synth with yandex speech kit
+    #FILE_NAME = 'out.ogg'
+    #f = open( FILE_NAME,"wb" )
+    #for audio_content in synthesizeWithYandexSpeechKit( txt ):
+        #f.write( audio_content )
+    #f.close( )
+
+    #f = open( FILE_NAME,"rb" )
+    #audioData = f.read( )
+    #f.close( )
 
     response = HttpResponse( audioData )
     response[ 'Content-Type' ] ='audio/wav'
     response[ 'Content-Length' ] = os.path.getsize( FILE_NAME )
+
     return response

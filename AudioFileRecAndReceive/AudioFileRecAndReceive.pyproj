@@ -56,15 +56,7 @@
     <Folder Include="app\static\app\" />
     <Folder Include="app\static\app\resources\" />
     <Folder Include="app\static\app\resources\audio\" />
-    <Folder Include="app\static\app\resources\audio\test\" />
-    <Folder Include="app\static\app\resources\audio\test\person3\" />
-    <Folder Include="app\static\app\resources\audio\test\person2\" />
-    <Folder Include="app\static\app\resources\audio\test\person1\" />
-    <Folder Include="app\static\app\resources\audio\test\person2\hello\" />
-    <Folder Include="app\static\app\resources\audio\test\person3\hello\" />
     <Folder Include="app\static\app\resources\audio\train\" />
-    <Folder Include="app\static\app\resources\audio\test\person1\hello\" />
-    <Folder Include="app\static\app\resources\audio\test\person1\okGoogle\" />
     <Folder Include="app\static\app\resources\audio\train\person1\hello\" />
     <Folder Include="app\static\app\resources\audio\train\person1\okGoogle\" />
     <Folder Include="app\static\app\resources\audio\train\person1\other\" />
@@ -72,6 +64,7 @@
     <Folder Include="app\static\app\resources\audio\train\person1\" />
     <Folder Include="app\static\app\resources\audio\train\person2\hello\" />
     <Folder Include="app\static\app\scripts\audioProcessing\" />
+    <Folder Include="app\static\app\scripts\gui\" />
     <Folder Include="app\static\app\scripts\recognition\" />
     <Folder Include="app\static\app\style\" />
     <Folder Include="app\static\app\scripts\" />
@@ -80,29 +73,20 @@
     <Folder Include="AudioFileRecAndReceive\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\static\app\resources\audio\test\person2\hello\01.wav" />
-    <Content Include="app\static\app\resources\audio\test\person3\hello\01.wav" />
     <Content Include="app\static\app\resources\audio\train\person1\okGoogle\6OkGoogle.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\1.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\2.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\3.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\4.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\5.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\okGoogle\6.wav" />
     <Content Include="app\static\app\resources\audio\train\person1\other\goodbye.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\hello\01.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\hello\02.wav" />
-    <Content Include="app\static\app\resources\audio\test\person1\hello\03.wav" />
     <Content Include="app\static\app\resources\audio\train\person1\hello\5hello.wav" />
     <Content Include="app\static\app\resources\audio\train\person1\other\hell.wav" />
     <Content Include="app\static\app\resources\audio\train\person2\hello\01.wav" />
     <Content Include="app\static\app\resources\audio\train\person2\hello\02.wav" />
     <Content Include="app\static\app\resources\audio\train\person2\hello\03.wav" />
     <Content Include="app\static\app\resources\ihaveadream.mp3" />
+    <Content Include="app\static\app\resources\trainVita.wav" />
     <Content Include="app\static\app\scripts\app.js" />
     <Content Include="app\static\app\scripts\audioProcessing\audioProcessing.js" />
     <Content Include="app\static\app\scripts\audioProcessing\audioSplitter.js" />
     <Content Include="app\static\app\scripts\audioProcessing\resampler.js" />
+    <Content Include="app\static\app\scripts\gui\speechkitt.js" />
     <Content Include="app\static\app\scripts\recognition\recognitionTrainer.js" />
     <Content Include="app\static\app\scripts\dictToJson.js" />
     <Content Include="app\static\app\scripts\dynamic-time-warping.js" />
@@ -114,7 +98,9 @@
     <Content Include="app\static\app\scripts\recorder.js" />
     <Content Include="app\static\app\scripts\utils.js" />
     <Content Include="app\static\app\scripts\wildemitter.js" />
+    <Content Include="app\static\app\style\speechKITT.scss" />
     <Content Include="app\static\app\style\style.css" />
+    <Content Include="app\templates\app\testSpeechKITT.html" />
     <Content Include="app\templates\app\mainMenu.html" />
     <Content Include="app\templates\app\recognitionWorker.html" />
     <Content Include="app\templates\app\recognitionTrainer.html" />

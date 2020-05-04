@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .logo {
+                margin: 2px;
+                border-radius: 30px;
+            }
+            h1 {
+                color: #000;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+
+        <script src="{% static "app/scripts/utils.js" %}"></script>
+        <script src="{% static "app/scripts/wildemitter.js" %}"></script>
+        <script src="{% static "app/scripts/hark.js" %}"></script>
+
+        <script src="{% static "app/scripts/audioProcessing/resampler.js" %}"></script>
+        <script src="{% static "app/scripts/audioProcessing/audioProcessing.js" %}"></script>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/speechkitt.min.js"></script>
+
+        <script>
+            var body, num, array, width, context, logo, myElements, analyser, src, height;
+
+            function loop( ) {
+                window.requestAnimationFrame( loop );
+                if ( !audioProcessing.speechOn )
+                    return;
+                audioProcessing.analyser.getByteFrequencyData( array );
+                for ( var i = 0; i < num; i++ ) {
+                    height = array[ i + num ];
+                    myElements[ i ].style.minHeight = height + 'px';
+                    myElements[ i ].style.opacity = 0.008 * height;
+                }
+            }
+
+            body = document.querySelector( 'body' );
+            num = 32;
+            array = new Uint8Array( num * 2 );
+            width = 10;
+            for ( var i = 0; i < num; i++ ) {
+                logo = document.createElement( 'div' );
+                logo.className = 'logo';
+                logo.style.background = 'green';
+                logo.style.minWidth = width + 'px';
+                body.appendChild( logo );
+            }
+            myElements = document.getElementsByClassName( 'logo' );
+
+            var audioProcessing = new AudioProcessing( );
+
+            window.onload = function ( ) {
+                navigator.mediaDevices.getUserMedia( {
+                    audio: true
+                } ).then( stream => {
+                    audioProcessing.startListening( stream );
+                    loop( );
+                } ).catch( error => {
+                    alert( error + '\r\n\ Отклонено. Страница будет обновлена!' );
+                    location.reload( );
+                } );
+            }
+
+            //SpeechKITT.setStartCommand(btnStart.click, btnStart);
+            SpeechKITT.setStylesheet( '//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat.css' );
+            SpeechKITT.vroom( );
+            
+        </script>
+    </body>
+</html>
